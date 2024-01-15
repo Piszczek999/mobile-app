@@ -8,6 +8,11 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: "#DCF2F1",
     gap: 10,
   },
+  navigation: {
+    height: 100,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   input: {
     borderWidth: 1,
     borderRadius: 5,

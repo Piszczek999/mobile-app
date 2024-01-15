@@ -42,6 +42,8 @@ io.on("connection", async (socket) => {
           "alert",
           "Email is already in use. Please choose a different email."
         );
+      } else if (error.code === "auth/invalid-email") {
+        socket.emit("alert", "Email is invalid.");
       } else {
         console.log(error);
         socket.emit(
