@@ -6,8 +6,6 @@ import {
   setDoc,
   doc,
 } from "firebase/firestore";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -25,6 +23,5 @@ const db = getFirestore(app);
 
 export const save = async () => {
   const character = { id: 1, name: "test" };
-  const charCol = collection(db, "characters");
-  await setDoc(doc(charCol, character.id), character);
+  await setDoc(doc(db, "characters", "1"), character);
 };

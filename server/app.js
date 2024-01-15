@@ -35,6 +35,7 @@ io.on("connection", async (socket) => {
         password
       );
       socket.emit("alert", "Account created");
+      socket.emit("logged", { username: "test" });
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
         socket.emit(
@@ -59,6 +60,7 @@ io.on("connection", async (socket) => {
         password
       );
       socket.emit("alert", "Logged successfully");
+      socket.emit("logged", { username: "test" });
     } catch (error) {
       console.error(error);
       socket.emit("alert", "Invalid email or password. Please try again.");
@@ -67,7 +69,7 @@ io.on("connection", async (socket) => {
 
   socket.on("disconnect", async () => {
     console.log(socket.id + " disconnected");
-    save();
+    await save();
   });
 });
 
