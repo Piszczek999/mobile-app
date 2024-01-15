@@ -6,6 +6,13 @@ export const globalStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#DCF2F1",
+    gap: 10,
+  },
+  input: {
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: "black",
+    minWidth: 100,
   },
   // TEXT
   textWhite: {
