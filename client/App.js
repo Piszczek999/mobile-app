@@ -8,9 +8,10 @@ import Login from "./screens/Login";
 import { socket } from "./socket";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Profile from "./screens/Profile";
+import { StatusBar } from "expo-status-bar";
+import { globalStyles } from "./styles/global";
 
 function MyTabBar({ state, descriptors, navigation }) {
-  console.log(state);
   return (
     <View style={{ flexDirection: "row", alignItems: "center" }}>
       {state.routes.map((route, index) => {
@@ -31,7 +32,7 @@ function MyTabBar({ state, descriptors, navigation }) {
           });
 
           if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name);
+            navigation.navigate(route.name, route.params.user);
           }
         };
 
@@ -44,6 +45,7 @@ function MyTabBar({ state, descriptors, navigation }) {
 
         return (
           <TouchableOpacity
+            activeOpacity={0.9}
             key={index}
             accessibilityRole="button"
             accessibilityState={isFocused ? { selected: true } : {}}
@@ -53,18 +55,18 @@ function MyTabBar({ state, descriptors, navigation }) {
             onLongPress={onLongPress}
             style={{
               flex: 1,
-              backgroundColor: isFocused ? "black" : "white",
+              backgroundColor: isFocused ? "#0B3680" : "#00072D",
               justifyContent: "center",
-              height: 40,
+              height: 50,
             }}
           >
             <Text
               style={{
-                color: isFocused ? "white" : "black",
+                color: isFocused ? "lightgray" : "gray",
                 textAlign: "center",
               }}
             >
-              <Icon name={route.params.icon} size={30} />
+              <Icon name={route.params.icon} size={35} />
             </Text>
           </TouchableOpacity>
         );
@@ -76,10 +78,18 @@ function MyTabBar({ state, descriptors, navigation }) {
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-  const [logged, setLogged] = useState(true);
+  const [logged, setLogged] = useState(false);
+  const [user, setUser] = useState();
 
   socket.on("alert", (message) => alert(message));
-  socket.on("logged", (data) => setLogged(true));
+  socket.on("logged", (data) => {
+    setUser(data);
+    setLogged(true);
+  });
+  socket.on("logout", () => {
+    setLogged(false);
+    setUser(undefined);
+  });
 
   if (!logged) return <Login />;
 
@@ -89,19 +99,32 @@ export default function App() {
         <Tab.Screen
           name="Exploration"
           component={Exploration}
-          initialParams={{ icon: "compass" }}
+          initialParams={{ icon: "compass", user }}
+          options={{
+            headerStyle: globalStyles.screenHeader,
+            headerTitleStyle: globalStyles.screenTitle,
+          }}
         />
         <Tab.Screen
           name="Home"
           component={Home}
-          initialParams={{ icon: "home" }}
+          initialParams={{ icon: "home", user }}
+          options={{
+            headerStyle: globalStyles.screenHeader,
+            headerTitleStyle: globalStyles.screenTitle,
+          }}
         />
         <Tab.Screen
           name="Profile"
           component={Profile}
-          initialParams={{ icon: "user" }}
+          initialParams={{ icon: "user", user }}
+          options={{
+            headerStyle: globalStyles.screenHeader,
+            headerTitleStyle: globalStyles.screenTitle,
+          }}
         />
       </Tab.Navigator>
+      <StatusBar style="light" />
     </NavigationContainer>
   );
 }

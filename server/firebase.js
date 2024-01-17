@@ -18,10 +18,14 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+export const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
 
-export const save = async () => {
-  const character = { id: 1, name: "test" };
-  await setDoc(doc(db, "characters", "1"), character);
+export const save = async (character, id) => {
+  if (character == undefined) return;
+  try {
+    await setDoc(doc(db, "users", id), character);
+  } catch (error) {
+    console.error(error);
+  }
 };

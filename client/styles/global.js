@@ -3,10 +3,7 @@ import { StyleSheet } from "react-native";
 export const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#DCF2F1",
-    gap: 10,
+    backgroundColor: "#001C55",
   },
   navigation: {
     height: 100,
@@ -14,12 +11,20 @@ export const globalStyles = StyleSheet.create({
     justifyContent: "space-between",
   },
   input: {
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: "black",
-    minWidth: 100,
+    borderWidth: 3,
+    borderRadius: 20,
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    borderColor: "#00072D",
+    minWidth: 200,
+    backgroundColor: "transparent",
+    color: "lightgray",
+    textAlign: "center",
+    fontWeight: "bold",
   },
   // TEXT
+  h1: { color: "lightgray", fontWeight: "bold", fontSize: 30 },
+  h2: { color: "lightgray", fontWeight: "bold", fontSize: 20 },
   textWhite: {
     color: "white",
   },
@@ -28,19 +33,10 @@ export const globalStyles = StyleSheet.create({
   },
   // SCREEN
   screenHeader: {
-    backgroundColor: "#7FC7D9",
+    backgroundColor: "#00072D",
   },
-  // DRAWER
-  drawerHeader: {
-    backgroundColor: "#7FC7D9",
-  },
-  drawerTitle: {
-    color: "white",
-    fontSize: 18,
-    marginBottom: 5,
-  },
-  drawerContainer: {
-    flex: 1,
-    backgroundColor: "#DCF2F1",
+  screenTitle: {
+    color: "lightgray",
+    fontSize: 30,
   },
 });

@@ -7,7 +7,9 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { save } from "./firebase.js";
+import { db, save } from "./firebase.js";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { validateCharacter } from "./utils.js";
 
 const port = 3000;
 const app = express();
@@ -25,27 +27,36 @@ app.get("/api", (req, res) => {
 });
 
 io.on("connection", async (socket) => {
+  let user = undefined;
+  let character = undefined;
   console.log(socket.id + " connected");
 
-  socket.on("register", async ({ email, password }) => {
+  socket.on("register", async ({ email, name, password }) => {
     try {
-      const userCredentials = await createUserWithEmailAndPassword(
+      const { user: userDB } = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-      socket.emit("alert", "Account created");
-      socket.emit("logged", { username: "test" });
+      const newCharacter = {
+        name: name,
+        level: 1,
+        exp: 0,
+        gold: 100,
+        equipment: { head: null, chest: null, legs: null, boots: null },
+      };
+      await setDoc(doc(db, "users", userDB.uid), newCharacter);
+      character = newCharacter;
+      user = userDB;
+      socket.emit("logged", character);
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
         socket.emit(
           "alert",
           "Email is already in use. Please choose a different email."
         );
-      } else if (error.code === "auth/invalid-email") {
-        socket.emit("alert", "Email is invalid.");
       } else {
-        console.log(error);
+        console.error(error);
         socket.emit(
           "alert",
           "An error occurred during registration. Please try again."
@@ -56,25 +67,34 @@ io.on("connection", async (socket) => {
 
   socket.on("login", async ({ email, password }) => {
     try {
-      const userCredentials = await signInWithEmailAndPassword(
+      const { user: userDB } = await signInWithEmailAndPassword(
         auth,
         email,
         password
       );
-      socket.emit("alert", "Logged successfully");
-      socket.emit("logged", { username: "test" });
+      const res = await getDoc(doc(db, "users", userDB.uid));
+      character = validateCharacter(res.data());
+      user = userDB;
+      socket.emit("logged", character);
     } catch (error) {
       console.error(error);
       socket.emit("alert", "Invalid email or password. Please try again.");
     }
   });
 
+  socket.on("logout", async () => {
+    await save(character, user.uid);
+    user = undefined;
+    character = undefined;
+    socket.emit("logout");
+  });
+
   socket.on("disconnect", async () => {
     console.log(socket.id + " disconnected");
-    await save();
+    await save(character);
   });
 });
 
 server.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Server listening on port ${port}`);
 });
