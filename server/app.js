@@ -7,16 +7,15 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { db, save } from "./firebase.js";
+import { auth, db, save } from "./firebase.js";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { validateCharacter } from "./utils.js";
+import { createUser, signIn } from "./auth.js";
 
 const port = 3000;
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
-
-const auth = getAuth();
 
 app.use(express.static("public"));
 
@@ -27,64 +26,28 @@ app.get("/api", (req, res) => {
 });
 
 io.on("connection", async (socket) => {
-  let user = undefined;
   let character = undefined;
   console.log(socket.id + " connected");
 
   socket.on("register", async ({ email, name, password }) => {
     try {
-      const { user: userDB } = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const newCharacter = {
-        name: name,
-        level: 1,
-        exp: 0,
-        gold: 100,
-        equipment: { head: null, chest: null, legs: null, boots: null },
-      };
-      await setDoc(doc(db, "users", userDB.uid), newCharacter);
-      character = newCharacter;
-      user = userDB;
+      character = await createUser(email, name, password);
       socket.emit("logged", character);
     } catch (error) {
-      if (error.code === "auth/email-already-in-use") {
-        socket.emit(
-          "alert",
-          "Email is already in use. Please choose a different email."
-        );
-      } else {
-        console.error(error);
-        socket.emit(
-          "alert",
-          "An error occurred during registration. Please try again."
-        );
-      }
+      socket.emit("alert", error);
     }
   });
 
   socket.on("login", async ({ email, password }) => {
     try {
-      const { user: userDB } = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const res = await getDoc(doc(db, "users", userDB.uid));
-      character = validateCharacter(res.data());
-      user = userDB;
-      socket.emit("logged", character);
+      character = await signIn(email, password);
     } catch (error) {
-      console.error(error);
-      socket.emit("alert", "Invalid email or password. Please try again.");
+      socket.emit("alert", error);
     }
   });
 
   socket.on("logout", async () => {
-    await save(character, user.uid);
-    user = undefined;
+    await save(character);
     character = undefined;
     socket.emit("logout");
   });

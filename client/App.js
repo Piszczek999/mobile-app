@@ -8,7 +8,6 @@ import Login from "./screens/Login";
 import { socket } from "./socket";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Profile from "./screens/Profile";
-import { StatusBar } from "expo-status-bar";
 import { globalStyles } from "./styles/global";
 
 function MyTabBar({ state, descriptors, navigation }) {
@@ -124,7 +123,6 @@ export default function App() {
           }}
         />
       </Tab.Navigator>
-      <StatusBar style="light" />
     </NavigationContainer>
   );
 }

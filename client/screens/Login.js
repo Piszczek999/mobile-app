@@ -1,5 +1,4 @@
 import {
-  Button,
   Keyboard,
   StyleSheet,
   Text,
@@ -10,9 +9,10 @@ import {
 
 import { LinearGradient } from "expo-linear-gradient";
 import { globalStyles } from "../styles/global";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { socket } from "../socket";
 import MyButton from "../components/MyButton";
+import { StatusBar } from "expo-status-bar";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -29,74 +29,103 @@ export default function Login() {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={globalStyles.container}>
-        {isRegister ? (
-          <View style={styles.content}>
-            <Text>Registration</Text>
-            <View style={styles.center}>
-              <Text>Name</Text>
-              <TextInput
-                style={globalStyles.input}
-                keyboardType="default"
-                onChangeText={setName}
+    <Fragment>
+      <StatusBar style="light" />
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={globalStyles.container}>
+          {isRegister ? (
+            <View style={styles.content}>
+              <Text style={{ ...globalStyles.h1, marginBottom: 40 }}>
+                Create an account
+              </Text>
+              <View style={styles.center}>
+                <Text style={globalStyles.h2}>Name</Text>
+                <LinearGradient
+                  colors={["#0A2472", "#0B3680"]}
+                  style={{ borderRadius: 20 }}
+                >
+                  <TextInput
+                    style={globalStyles.input}
+                    onChangeText={setName}
+                  />
+                </LinearGradient>
+              </View>
+              <View style={styles.center}>
+                <Text style={globalStyles.h2}>Email</Text>
+                <LinearGradient
+                  colors={["#0A2472", "#0B3680"]}
+                  style={{ borderRadius: 20 }}
+                >
+                  <TextInput
+                    style={globalStyles.input}
+                    onChangeText={setEmail}
+                  />
+                </LinearGradient>
+              </View>
+              <View style={styles.center}>
+                <Text style={globalStyles.h2}>Password</Text>
+                <LinearGradient
+                  colors={["#0A2472", "#0B3680"]}
+                  style={{ borderRadius: 20 }}
+                >
+                  <TextInput
+                    style={globalStyles.input}
+                    onChangeText={setPassword}
+                  />
+                </LinearGradient>
+              </View>
+              <MyButton
+                title="Create an account"
+                onPress={async () => await handleRegister()}
+              />
+              <MyButton
+                title="Already have an account?"
+                onPress={() => setIsRegister(false)}
               />
             </View>
-            <View style={styles.center}>
-              <Text>Email</Text>
-              <TextInput
-                style={globalStyles.input}
-                keyboardType="default"
-                onChangeText={setEmail}
+          ) : (
+            <View style={styles.content}>
+              <Text style={{ ...globalStyles.h1, marginBottom: 40 }}>
+                Log in
+              </Text>
+              <View style={styles.center}>
+                <Text style={globalStyles.h2}>Email</Text>
+                <LinearGradient
+                  colors={["#0A2472", "#0B3680"]}
+                  style={{ borderRadius: 20 }}
+                >
+                  <TextInput
+                    style={globalStyles.input}
+                    onChangeText={setEmail}
+                  />
+                </LinearGradient>
+              </View>
+              <View style={styles.center}>
+                <Text style={globalStyles.h2}>Password</Text>
+                <LinearGradient
+                  colors={["#0A2472", "#0B3680"]}
+                  style={{ borderRadius: 20 }}
+                >
+                  <TextInput
+                    style={globalStyles.input}
+                    secureTextEntry
+                    onChangeText={setPassword}
+                  />
+                </LinearGradient>
+              </View>
+              <MyButton
+                title="Sign in"
+                onPress={async () => await handleLogin()}
+              />
+              <MyButton
+                title="Create an account"
+                onPress={() => setIsRegister(true)}
               />
             </View>
-            <View style={styles.center}>
-              <Text>Password</Text>
-              <TextInput
-                style={globalStyles.input}
-                secureTextEntry
-                onChangeText={setPassword}
-              />
-            </View>
-            <Button
-              title="Register"
-              onPress={async () => await handleRegister()}
-            />
-            <Button title="Login" onPress={() => setIsRegister(false)} />
-          </View>
-        ) : (
-          <View style={styles.content}>
-            <Text style={{ ...globalStyles.h1, marginBottom: 40 }}>
-              Logging in
-            </Text>
-            <View style={styles.center}>
-              <Text style={globalStyles.h2}>Email</Text>
-              <LinearGradient
-                colors={["#0A2472", "#0B3680"]}
-                style={{ borderRadius: 20 }}
-              >
-                <TextInput style={globalStyles.input} onChangeText={setEmail} />
-              </LinearGradient>
-            </View>
-            <View style={styles.center}>
-              <Text style={globalStyles.h2}>Password</Text>
-              <LinearGradient
-                colors={["#0A2472", "#0B3680"]}
-                style={{ borderRadius: 20 }}
-              >
-                <TextInput
-                  style={globalStyles.input}
-                  secureTextEntry
-                  onChangeText={setPassword}
-                />
-              </LinearGradient>
-            </View>
-            <MyButton title="Login" onPress={async () => await handleLogin()} />
-            <MyButton title="Register" onPress={() => setIsRegister(true)} />
-          </View>
-        )}
-      </View>
-    </TouchableWithoutFeedback>
+          )}
+        </View>
+      </TouchableWithoutFeedback>
+    </Fragment>
   );
 }
 
