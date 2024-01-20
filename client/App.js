@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "./screens/Home";
 import Exploration from "./screens/Exploration";
 import { useState } from "react";
-import Login from "./screens/Login";
+import Login from "./shared/Login";
 import { socket } from "./socket";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Profile from "./screens/Profile";
@@ -74,23 +74,28 @@ function MyTabBar({ state, descriptors, navigation }) {
   );
 }
 
-const Tab = createBottomTabNavigator();
-
 export default function App() {
   const [logged, setLogged] = useState(false);
-  const [user, setUser] = useState();
+  const [character, setCharacter] = useState();
 
   socket.on("alert", (message) => alert(message));
   socket.on("logged", (data) => {
-    setUser(data);
+    setCharacter(data);
     setLogged(true);
   });
   socket.on("logout", () => {
     setLogged(false);
-    setUser(undefined);
+    setCharacter(undefined);
   });
 
   if (!logged) return <Login />;
+
+  const Tab = createBottomTabNavigator();
+
+  const screenOptions = {
+    headerStyle: globalStyles.screenHeader,
+    headerTitleStyle: globalStyles.screenTitle,
+  };
 
   return (
     <NavigationContainer>
@@ -98,29 +103,20 @@ export default function App() {
         <Tab.Screen
           name="Exploration"
           component={Exploration}
-          initialParams={{ icon: "compass", user }}
-          options={{
-            headerStyle: globalStyles.screenHeader,
-            headerTitleStyle: globalStyles.screenTitle,
-          }}
+          initialParams={{ icon: "compass", user: character }}
+          options={screenOptions}
         />
         <Tab.Screen
           name="Home"
           component={Home}
-          initialParams={{ icon: "home", user }}
-          options={{
-            headerStyle: globalStyles.screenHeader,
-            headerTitleStyle: globalStyles.screenTitle,
-          }}
+          initialParams={{ icon: "home", user: character }}
+          options={screenOptions}
         />
         <Tab.Screen
           name="Profile"
           component={Profile}
-          initialParams={{ icon: "user", user }}
-          options={{
-            headerStyle: globalStyles.screenHeader,
-            headerTitleStyle: globalStyles.screenTitle,
-          }}
+          initialParams={{ icon: "user", user: character }}
+          options={screenOptions}
         />
       </Tab.Navigator>
     </NavigationContainer>

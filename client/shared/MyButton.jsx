@@ -13,7 +13,6 @@ export default function MyButton({ title, onPress }) {
 
 const styles = StyleSheet.create({
   button: {
-    borderColor: "#00072D",
     borderWidth: 3,
     borderRadius: 20,
     paddingHorizontal: 15,

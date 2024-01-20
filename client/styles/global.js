@@ -4,6 +4,7 @@ export const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#001C55",
+    padding: 10,
   },
   navigation: {
     height: 100,
@@ -22,15 +23,24 @@ export const globalStyles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
   },
+  frame: {
+    padding: 5,
+    borderWidth: 3,
+    borderRadius: 10,
+    borderColor: "#00072D",
+    backgroundColor: "#0B3680",
+  },
+  itemFrame: {
+    borderWidth: 2,
+    borderRadius: 10,
+    borderColor: "#00072D",
+    backgroundColor: "#0B3680",
+    width: 60,
+    height: 60,
+  },
   // TEXT
   h1: { color: "lightgray", fontWeight: "bold", fontSize: 30 },
   h2: { color: "lightgray", fontWeight: "bold", fontSize: 20 },
-  textWhite: {
-    color: "white",
-  },
-  textBlack: {
-    color: "black",
-  },
   // SCREEN
   screenHeader: {
     backgroundColor: "#00072D",
