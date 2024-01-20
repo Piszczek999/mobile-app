@@ -2,15 +2,8 @@ import express from "express";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
 
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { auth, db, save } from "./firebase.js";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import { validateCharacter } from "./utils.js";
-import { createUser, signIn } from "./auth.js";
+import { signIn } from "./auth.js";
+import { getCharacter, save } from "./firestore.js";
 
 const port = 3000;
 const app = express();
@@ -26,21 +19,15 @@ app.get("/api", (req, res) => {
 });
 
 io.on("connection", async (socket) => {
+  let uid = "";
   let character = undefined;
   console.log(socket.id + " connected");
 
-  socket.on("register", async ({ email, name, password }) => {
+  socket.on("login", async (tokenId) => {
     try {
-      character = await createUser(email, name, password);
+      uid = await signIn(tokenId);
+      character = await getCharacter(uid);
       socket.emit("logged", character);
-    } catch (error) {
-      socket.emit("alert", error);
-    }
-  });
-
-  socket.on("login", async ({ email, password }) => {
-    try {
-      character = await signIn(email, password);
     } catch (error) {
       socket.emit("alert", error);
     }
