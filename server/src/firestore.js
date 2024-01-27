@@ -25,7 +25,7 @@ export async function getCharacter(uid) {
       await save(newCharacter);
       return newCharacter;
     }
-    return validateCharacter(character);
+    return character;
   } catch (error) {
     console.error(error);
     throw "An error occurred during getting character.";

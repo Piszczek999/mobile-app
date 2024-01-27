@@ -31,6 +31,11 @@ io.on("connection", async (socket) => {
       uid = await signIn(tokenId);
       character = await getCharacter(uid);
       socket.emit("updateCharacter", character);
+      if (character.exploration) {
+        explorationTimer = setTimeout(() => {
+          explorationComplete(socket, character);
+        }, character.exploration.startTime + character.exploration.duration - Date.now());
+      }
     } catch (error) {
       socket.emit("alert", error);
     }
@@ -62,6 +67,9 @@ io.on("connection", async (socket) => {
 
   socket.on("disconnect", async () => {
     console.log(socket.id + " disconnected");
+
+    clearTimeout(explorationTimer);
+
     await save(character);
   });
 });

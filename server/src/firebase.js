@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 
-import credentials from "./ServiceAccountKey.json" assert { type: "json" };
+import credentials from "../ServiceAccountKey.json" assert { type: "json" };
 import { getAuth } from "firebase-admin/auth";
 import admin from "firebase-admin";
 

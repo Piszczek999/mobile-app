@@ -44,15 +44,27 @@ export function getHead(character) {
   };
 }
 
-export function explorationComplete(socket, character) {
-  const { exploration } = character;
-  const map = maps[exploration.mapId];
-  character.exp += map.exp + (Math.random() * map.exp) / 5;
-  character.gold += map.gold + (Math.random() * map.gold) / 5;
+export function explorationComplete(socket, ch) {
+  console.log(ch);
+  const map = maps[ch.exploration.mapId];
+  ch.exp += map.exp + (Math.random() * map.exp) / 5;
+  ch.gold += map.gold + (Math.random() * map.gold) / 5;
 
-  character.exploration = null;
-  save(character);
+  const rewards = map.drop.map((item) => {
+    let count = 0;
+    for (let index = 0; index < item.count; index++) {
+      const random = Math.random();
+      if (random < item.chance) count++;
+      console.log(random + " " + item.chance);
+    }
+
+    return count ? { count, id: item.id } : null;
+  });
+  console.log(rewards);
+
+  ch.exploration = null;
+  save(ch);
 
   socket.emit("alert", "Exploration Completed");
-  socket.emit("updateCharacter", character);
+  socket.emit("updateCharacter", ch);
 }
