@@ -3,28 +3,25 @@ import {
   Keyboard,
   StyleSheet,
   Text,
-  TextInput,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
+import { FirebaseError } from "firebase/app";
 import {
-  ErrorFn,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { Fragment, useEffect, useState } from "react";
-import MyButton from "./MyButton";
 import { auth } from "../firebase";
-import { socket } from "../socket";
+import { login, logout, socket } from "../socket";
 import { globalStyles } from "../styles/global";
-import Gradient from "./Gradient";
 import Input from "./Input";
-import { FirebaseError } from "firebase/app";
+import MyButton from "./MyButton";
+import Tile from "./Tile";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -36,9 +33,9 @@ export default function Login() {
     const handle = async () => {
       if (user) {
         const token = await user.getIdToken();
-        socket.emit("login", token);
+        login(token);
       } else {
-        socket.emit("logout");
+        logout();
       }
     };
     handle();
@@ -158,22 +155,29 @@ export default function Login() {
     <Fragment>
       <StatusBar style="light" />
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <Gradient style={globalStyles.container}>
+        <Tile style={globalStyles.container}>
           {isRegister ? (
             <View style={styles.content}>
               <Text style={{ ...globalStyles.h1, marginBottom: 40 }}>
                 Create an account
               </Text>
-              <Input onChangeText={setEmail} placeholder="Email" />
-              <Input onChangeText={setPassword} placeholder="Password" />
-              <MyButton
-                title="Sign up"
-                onPress={async () => await handleRegister()}
+              <Input
+                textContentType="emailAddress"
+                onChangeText={setEmail}
+                placeholder="Email"
               />
-              <MyButton
-                title="Log in instead"
-                onPress={() => setIsRegister(false)}
+              <Input
+                secureTextEntry
+                textContentType="password"
+                onChangeText={setPassword}
+                placeholder="Password"
               />
+              <MyButton onPress={async () => await handleRegister()}>
+                Sign In
+              </MyButton>
+              <MyButton onPress={() => setIsRegister(false)}>
+                Log in instead
+              </MyButton>
             </View>
           ) : (
             <View style={styles.content}>
@@ -181,19 +185,27 @@ export default function Login() {
                 Log in
               </Text>
               <View style={styles.center}>
-                <Input onChangeText={setEmail} placeholder="Email" />
+                <Input
+                  textContentType="emailAddress"
+                  onChangeText={setEmail}
+                  placeholder="Email"
+                />
               </View>
               <View style={styles.center}>
-                <Input onChangeText={setPassword} placeholder="Password" />
+                <Input
+                  secureTextEntry
+                  textContentType="password"
+                  onChangeText={setPassword}
+                  placeholder="Password"
+                />
               </View>
-              <MyButton
-                title="Sign in"
-                onPress={async () => await handleLogin()}
-              />
-              <MyButton title="Register" onPress={() => setIsRegister(true)} />
+              <MyButton onPress={async () => await handleLogin()}>
+                Sign in
+              </MyButton>
+              <MyButton onPress={() => setIsRegister(true)}>Register</MyButton>
             </View>
           )}
-        </Gradient>
+        </Tile>
       </TouchableWithoutFeedback>
     </Fragment>
   );

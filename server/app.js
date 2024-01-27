@@ -4,6 +4,8 @@ import { Server } from "socket.io";
 
 import { signIn } from "./auth.js";
 import { getCharacter, save } from "./firestore.js";
+import { maps } from "./constants.js";
+import { explorationComplete } from "./utils.js";
 
 const port = 3000;
 const app = express();
@@ -21,13 +23,14 @@ app.get("/api", (req, res) => {
 io.on("connection", async (socket) => {
   let uid = "";
   let character = undefined;
+  let explorationTimer;
   console.log(socket.id + " connected");
 
   socket.on("login", async (tokenId) => {
     try {
       uid = await signIn(tokenId);
       character = await getCharacter(uid);
-      socket.emit("logged", character);
+      socket.emit("updateCharacter", character);
     } catch (error) {
       socket.emit("alert", error);
     }
@@ -35,8 +38,26 @@ io.on("connection", async (socket) => {
 
   socket.on("logout", async () => {
     await save(character);
-    character = undefined;
+    character = null;
     socket.emit("logout");
+  });
+
+  socket.on("explorationStart", (mapId) => {
+    if (character.exploration) {
+      socket.emit("alert", "You are already exploring!");
+      return;
+    }
+
+    character.exploration = {
+      mapId: mapId,
+      startTime: Date.now(),
+      duration: maps[mapId].duration,
+    };
+    socket.emit("updateCharacter", character);
+
+    explorationTimer = setTimeout(() => {
+      explorationComplete(socket, character);
+    }, character.exploration.duration);
   });
 
   socket.on("disconnect", async () => {

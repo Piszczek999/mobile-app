@@ -1,38 +1,38 @@
 import { StyleSheet, View } from "react-native";
-import Gradient from "./Gradient";
+import TileWithShadow from "./TileWithShadow";
 
 export default function Armor() {
   return (
     <View style={{ display: "flex", flexDirection: "row", gap: 5 }}>
       <View style={styles.armorColumn}>
-        <Gradient
+        <TileWithShadow
           colors={["#666", "#555"]}
           style={{ width: 60, height: 60 }}
-        ></Gradient>
+        ></TileWithShadow>
       </View>
       <View style={styles.armorColumn}>
-        <Gradient
+        <TileWithShadow
           colors={["#666", "#555"]}
           style={{ width: 60, height: 60 }}
-        ></Gradient>
-        <Gradient
+        ></TileWithShadow>
+        <TileWithShadow
           colors={["#666", "#555"]}
           style={{ width: 60, height: 60 }}
-        ></Gradient>
-        <Gradient
+        ></TileWithShadow>
+        <TileWithShadow
           colors={["#666", "#555"]}
           style={{ width: 60, height: 60 }}
-        ></Gradient>
+        ></TileWithShadow>
       </View>
       <View style={styles.armorColumn}>
-        <Gradient
+        <TileWithShadow
           colors={["#666", "#555"]}
           style={{ width: 60, height: 60 }}
-        ></Gradient>
-        <Gradient
+        ></TileWithShadow>
+        <TileWithShadow
           colors={["#666", "#555"]}
           style={{ width: 60, height: 60 }}
-        ></Gradient>
+        ></TileWithShadow>
       </View>
     </View>
   );

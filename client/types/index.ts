@@ -22,6 +22,7 @@ export type Character = {
   exp: number;
   gold: number;
   weapon: Item;
+  exploration: Exploration;
   armor: {
     head: Item;
     chest: Item;
@@ -31,8 +32,15 @@ export type Character = {
 };
 
 export type Map = {
+  id: string;
   title: string;
   image: ImageSourcePropType;
   minLevel: number;
+  duration: number;
+};
+
+export type Exploration = {
+  mapId: string;
+  startTime: number;
   duration: number;
 };

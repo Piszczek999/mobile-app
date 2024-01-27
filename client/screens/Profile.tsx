@@ -5,9 +5,9 @@ import { Fragment } from "react";
 import { StyleSheet, View } from "react-native";
 import { RootStackParamList } from "../App";
 import Armor from "../shared/Armor";
-import Gradient from "../shared/Gradient";
 import Inventory from "../shared/Inventory";
 import Stats from "../shared/Stats";
+import Tile from "../shared/Tile";
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, "Profile">;
 
@@ -27,13 +27,19 @@ export default function Profile({ route, navigation }: Props) {
   return (
     <Fragment>
       <StatusBar style="light" />
-      <Gradient style={{ flex: 1, padding: 5, gap: 10 }}>
-        <View style={{ display: "flex", flexDirection: "row", gap: 10 }}>
+      <Tile style={{ flex: 1, padding: 5, gap: 10 }}>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            gap: 10,
+          }}
+        >
           <Stats character={character} />
           <Armor />
         </View>
         <Inventory items={inventory} />
-      </Gradient>
+      </Tile>
     </Fragment>
   );
 }

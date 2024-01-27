@@ -1,4 +1,5 @@
-import { db } from "./firebase.js";
+import { maps } from "./constants.js";
+import { save } from "./firestore.js";
 
 export function validateCharacter(character) {
   return {
@@ -41,4 +42,17 @@ export function getHead(character) {
     level: character.level,
     name: character.name,
   };
+}
+
+export function explorationComplete(socket, character) {
+  const { exploration } = character;
+  const map = maps[exploration.mapId];
+  character.exp += map.exp + (Math.random() * map.exp) / 5;
+  character.gold += map.gold + (Math.random() * map.gold) / 5;
+
+  character.exploration = null;
+  save(character);
+
+  socket.emit("alert", "Exploration Completed");
+  socket.emit("updateCharacter", character);
 }

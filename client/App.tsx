@@ -16,6 +16,7 @@ import TabBar from "./shared/TabBar";
 import { socket } from "./socket";
 import { globalStyles } from "./styles/global";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { Character } from "./types";
 
 export type RootStackParamList = {
   Exploration: { icon: string; user: any };
@@ -27,11 +28,11 @@ const Tab = createBottomTabNavigator<RootStackParamList>();
 
 const App: React.FC = () => {
   const [logged, setLogged] = useState(false);
-  const [character, setCharacter] = useState<any>();
+  const [character, setCharacter] = useState<Character>();
 
   socket.on("alert", (message: any) => alert(message));
-  socket.on("logged", (data: any) => {
-    setCharacter(data);
+  socket.on("updateCharacter", (character: Character) => {
+    setCharacter(character);
     setLogged(true);
   });
   socket.on("logout", () => {
@@ -54,6 +55,8 @@ const App: React.FC = () => {
       console.error(error);
     }
   };
+  console.log("App: ");
+  console.log(character);
 
   return (
     <NavigationContainer>

@@ -22,13 +22,6 @@ export const globalStyles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
   },
-  frame: {
-    padding: 5,
-    borderWidth: 3,
-    borderRadius: 10,
-    borderColor: "#00072D",
-    backgroundColor: "#0B3680",
-  },
   itemFrame: {
     borderWidth: 2,
     borderRadius: 10,

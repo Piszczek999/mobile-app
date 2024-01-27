@@ -1,36 +1,36 @@
 import { StyleSheet, Text, View } from "react-native";
 import { Item } from "../types";
-import Gradient from "./Gradient";
+import Tile from "./Tile";
 
 export default function Inventory({ items }: { items: Item[] }) {
   return (
-    <Gradient colors={["#666", "#555"]} style={{ flex: 1, padding: 0 }}>
+    <Tile colors={["#555", "#444"]} style={{ flex: 1, padding: 0 }}>
       <View
         style={{
           display: "flex",
           flexDirection: "row",
         }}
       >
-        <Gradient colors={["#666", "#555"]} style={styles.tab}>
+        <Tile colors={["#666", "#555"]} style={styles.tab}>
           <Text style={{ color: "white", textAlign: "center" }}>
             Ulepszacze
           </Text>
-        </Gradient>
-        <Gradient colors={["#666", "#555"]} style={styles.tab}>
+        </Tile>
+        <Tile colors={["#666", "#555"]} style={styles.tab}>
           <Text style={{ color: "white", textAlign: "center" }}>
             Wyposażenie
           </Text>
-        </Gradient>
-        <Gradient colors={["#666", "#555"]} style={styles.tab}>
+        </Tile>
+        <Tile colors={["#666", "#555"]} style={styles.tab}>
           <Text style={{ color: "white", textAlign: "center" }}>Inne</Text>
-        </Gradient>
+        </Tile>
       </View>
       <View>
         {/* {items.map((item) => (
           <View style={globalStyles.itemFrame}></View>
         ))} */}
       </View>
-    </Gradient>
+    </Tile>
   );
 }
 

@@ -5,7 +5,7 @@ import { Fragment } from "react";
 import { StatusBar } from "expo-status-bar";
 import { RootStackParamList } from "../App";
 import { StackNavigationProp } from "@react-navigation/stack";
-import Gradient from "../shared/Gradient";
+import Tile from "../shared/Tile";
 
 type HomeScreenRouteProp = RouteProp<RootStackParamList, "Home">;
 
@@ -23,9 +23,9 @@ export default function Home({ route, navigation }: Props) {
   return (
     <Fragment>
       <StatusBar style="light" />
-      <Gradient style={globalStyles.container}>
+      <Tile style={globalStyles.container}>
         <Text>Home Screen</Text>
-      </Gradient>
+      </Tile>
     </Fragment>
   );
 }

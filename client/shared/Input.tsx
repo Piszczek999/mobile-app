@@ -1,9 +1,9 @@
 import { TextInput, TextInputProps } from "react-native";
-import Gradient from "./Gradient";
+import Tile from "./Tile";
 
 export default function Input({ ...props }: TextInputProps) {
   return (
-    <Gradient
+    <Tile
       start={{ x: 0.5, y: 0 }}
       end={{ x: 0.5, y: 1 }}
       colors={["#444", "#666"]}
@@ -21,6 +21,6 @@ export default function Input({ ...props }: TextInputProps) {
           paddingVertical: 10,
         }}
       />
-    </Gradient>
+    </Tile>
   );
 }
