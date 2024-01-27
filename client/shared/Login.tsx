@@ -12,6 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import {
+  ErrorFn,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
@@ -21,6 +22,9 @@ import MyButton from "./MyButton";
 import { auth } from "../firebase";
 import { socket } from "../socket";
 import { globalStyles } from "../styles/global";
+import Gradient from "./Gradient";
+import Input from "./Input";
+import { FirebaseError } from "firebase/app";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -56,11 +60,21 @@ export default function Login() {
       await signInWithEmailAndPassword(auth, email, password);
       await storeCredentials();
     } catch (error) {
-      if (error.code === "auth/invalid-credential") {
-        alert("Password or email is incorrect");
-      } else if (error.code === "auth/invalid-email") {
-        alert("Email is incorrect");
+      if (error! instanceof FirebaseError) {
+        if (error.code === "auth/invalid-credential") {
+          alert("Password or email is incorrect");
+        } else if (error.code === "auth/invalid-email") {
+          alert("Email is incorrect");
+        } else if (error.code === "auth/missing-email") {
+          alert("Email is missing");
+        } else if (error.code === "auth/missing-password") {
+          alert("Password is missing");
+        } else {
+          alert("An error occurred during user creation.");
+          console.error(error);
+        }
       } else {
+        alert("An error occurred during user creation.");
         console.error(error);
       }
     }
@@ -71,12 +85,19 @@ export default function Login() {
       await createUserWithEmailAndPassword(auth, email, password);
       await storeCredentials();
     } catch (error) {
-      if (error.code === "auth/email-already-in-use") {
-        alert("Email is already in use.");
-      } else if (error.code === "auth/missing-password") {
-        alert("Type in password");
-      } else if (error.code === "auth/invalid-email") {
-        alert("Email is incorrect");
+      if (error! instanceof FirebaseError) {
+        if (error.code === "auth/email-already-in-use") {
+          alert("Email is already in use.");
+        } else if (error.code === "auth/missing-password") {
+          alert("Type in password");
+        } else if (error.code === "auth/invalid-email") {
+          alert("Email is incorrect");
+        } else if (error.code === "auth/admin-restricted-operation") {
+          alert("Type in email and password");
+        } else {
+          alert("An error occurred during user creation.");
+          console.error(error);
+        }
       } else {
         alert("An error occurred during user creation.");
         console.error(error);
@@ -91,18 +112,23 @@ export default function Login() {
         const credentials = await AsyncStorage.multiGet(["email", "password"]);
         const storedEmail = credentials[0][1];
         const storedPassword = credentials[1][1];
-        setEmail(storedEmail);
-        setPassword(storedPassword);
         if (storedEmail && storedPassword) {
+          setEmail(storedEmail);
+          setPassword(storedPassword);
           try {
             await signInWithEmailAndPassword(auth, storedEmail, storedPassword);
           } catch (error) {
-            if (error.code === "auth/email-already-in-use") {
-              alert("Email is already in use.");
-            } else if (error.code === "auth/missing-password") {
-              alert("Type in password");
-            } else if (error.code === "auth/invalid-email") {
-              alert("Email is incorrect");
+            if (error! instanceof FirebaseError) {
+              if (error.code === "auth/email-already-in-use") {
+                alert("Email is already in use.");
+              } else if (error.code === "auth/missing-password") {
+                alert("Type in password");
+              } else if (error.code === "auth/invalid-email") {
+                alert("Email is incorrect");
+              } else {
+                alert("An error occurred during user creation.");
+                console.error(error);
+              }
             } else {
               alert("An error occurred during user creation.");
               console.error(error);
@@ -132,43 +158,20 @@ export default function Login() {
     <Fragment>
       <StatusBar style="light" />
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={globalStyles.container}>
+        <Gradient style={globalStyles.container}>
           {isRegister ? (
             <View style={styles.content}>
               <Text style={{ ...globalStyles.h1, marginBottom: 40 }}>
                 Create an account
               </Text>
-              <View style={styles.center}>
-                <Text style={globalStyles.h2}>Email</Text>
-                <LinearGradient
-                  colors={["#0A2472", "#0B3680"]}
-                  style={{ borderRadius: 20 }}
-                >
-                  <TextInput
-                    style={globalStyles.input}
-                    onChangeText={setEmail}
-                  />
-                </LinearGradient>
-              </View>
-              <View style={styles.center}>
-                <Text style={globalStyles.h2}>Password</Text>
-                <LinearGradient
-                  colors={["#0A2472", "#0B3680"]}
-                  style={{ borderRadius: 20 }}
-                >
-                  <TextInput
-                    style={globalStyles.input}
-                    onChangeText={setPassword}
-                    secureTextEntry
-                  />
-                </LinearGradient>
-              </View>
+              <Input onChangeText={setEmail} placeholder="Email" />
+              <Input onChangeText={setPassword} placeholder="Password" />
               <MyButton
-                title="Create an account"
+                title="Sign up"
                 onPress={async () => await handleRegister()}
               />
               <MyButton
-                title="Already have an account?"
+                title="Log in instead"
                 onPress={() => setIsRegister(false)}
               />
             </View>
@@ -178,43 +181,19 @@ export default function Login() {
                 Log in
               </Text>
               <View style={styles.center}>
-                <Text style={globalStyles.h2}>Email</Text>
-                <LinearGradient
-                  colors={["#0A2472", "#0B3680"]}
-                  style={{ borderRadius: 20 }}
-                >
-                  <TextInput
-                    style={globalStyles.input}
-                    onChangeText={setEmail}
-                    value={email}
-                  />
-                </LinearGradient>
+                <Input onChangeText={setEmail} placeholder="Email" />
               </View>
               <View style={styles.center}>
-                <Text style={globalStyles.h2}>Password</Text>
-                <LinearGradient
-                  colors={["#0A2472", "#0B3680"]}
-                  style={{ borderRadius: 20 }}
-                >
-                  <TextInput
-                    style={globalStyles.input}
-                    secureTextEntry
-                    onChangeText={setPassword}
-                    value={password}
-                  />
-                </LinearGradient>
+                <Input onChangeText={setPassword} placeholder="Password" />
               </View>
               <MyButton
                 title="Sign in"
                 onPress={async () => await handleLogin()}
               />
-              <MyButton
-                title="Create an account"
-                onPress={() => setIsRegister(true)}
-              />
+              <MyButton title="Register" onPress={() => setIsRegister(true)} />
             </View>
           )}
-        </View>
+        </Gradient>
       </TouchableWithoutFeedback>
     </Fragment>
   );
