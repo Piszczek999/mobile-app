@@ -1,7 +1,9 @@
-import { maps } from "./constants.js";
-import { save } from "./firestore.js";
+import { Socket } from "socket.io";
+import { maps } from "./constants";
+import { save } from "./firestore";
+import { Character } from "./types";
 
-export function validateCharacter(character) {
+export function validateCharacter(character: Character) {
   return {
     ...character,
     uid: character.uid,
@@ -19,7 +21,7 @@ export function validateCharacter(character) {
   };
 }
 
-export function createCharacter(uid) {
+export function createCharacter(uid: string): Character {
   return {
     uid: uid,
     name: uid,
@@ -27,16 +29,17 @@ export function createCharacter(uid) {
     exp: 0,
     gold: 100,
     weapon: null,
+    exploration: null,
     armor: {
       head: null,
       chest: null,
       legs: null,
     },
-    inventory: {},
+    inventory: [],
   };
 }
 
-export function getHead(character) {
+export function getHead(character: Character) {
   return {
     uid: character.uid,
     level: character.level,
@@ -44,22 +47,22 @@ export function getHead(character) {
   };
 }
 
-export function explorationComplete(socket, ch) {
-  console.log(ch);
+export function explorationComplete(socket: Socket, ch: Character) {
+  if (!ch.exploration) return;
   const map = maps[ch.exploration.mapId];
   ch.exp += map.exp + (Math.random() * map.exp) / 5;
   ch.gold += map.gold + (Math.random() * map.gold) / 5;
 
-  const rewards = map.drop.map((item) => {
-    let count = 0;
-    for (let index = 0; index < item.count; index++) {
-      const random = Math.random();
-      if (random < item.chance) count++;
-      console.log(random + " " + item.chance);
-    }
+  const rewards = map.drop
+    .map((item) => {
+      let count = 0;
+      for (let index = 0; index < item.count; index++) {
+        if (Math.random() < item.chance) count++;
+      }
+      return count ? { count, id: item.id } : null;
+    })
+    .filter((item) => item !== null);
 
-    return count ? { count, id: item.id } : null;
-  });
   console.log(rewards);
 
   ch.exploration = null;

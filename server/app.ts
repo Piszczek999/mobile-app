@@ -1,32 +1,32 @@
-import express from "express";
-import { createServer } from "node:http";
-import { Server } from "socket.io";
+import express, { Express, Request, Response } from "express";
+import { createServer, Server as NodeServer } from "http";
 
-import { signIn } from "./auth.js";
-import { getCharacter, save } from "./firestore.js";
-import { maps } from "./constants.js";
-import { explorationComplete } from "./utils.js";
+import { signIn } from "./src/auth";
+import { getCharacter, save } from "./src/firestore";
+import { maps } from "./src/constants";
+import { explorationComplete } from "./src/utils";
+import { Server, Socket } from "socket.io";
 
-const port = 3000;
-const app = express();
-const server = createServer(app);
-const io = new Server(server);
+const port: number = 3000;
+const app: Express = express();
+const server: NodeServer = createServer(app);
+const io: Server = new Server(server);
 
 app.use(express.static("public"));
 
-app.get("/api", (req, res) => {
+app.get("/api", (req: Request, res: Response) => {
   res.json({
     message: "Hello world",
   });
 });
 
-io.on("connection", async (socket) => {
-  let uid = "";
-  let character = undefined;
-  let explorationTimer;
+io.on("connection", async (socket: Socket) => {
+  let uid: string = "";
+  let character: any = undefined;
+  let explorationTimer: NodeJS.Timeout;
   console.log(socket.id + " connected");
 
-  socket.on("login", async (tokenId) => {
+  socket.on("login", async (tokenId: string) => {
     try {
       uid = await signIn(tokenId);
       character = await getCharacter(uid);
@@ -47,7 +47,7 @@ io.on("connection", async (socket) => {
     socket.emit("logout");
   });
 
-  socket.on("explorationStart", (mapId) => {
+  socket.on("explorationStart", (mapId: string) => {
     if (character.exploration) {
       socket.emit("alert", "You are already exploring!");
       return;

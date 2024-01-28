@@ -1,7 +1,8 @@
-import { db } from "./firebase.js";
-import { createCharacter, validateCharacter } from "./utils.js";
+import { db } from "./firebase";
+import { Character } from "./types";
+import { createCharacter } from "./utils";
 
-export const save = async (character) => {
+export const save = async (character: Character) => {
   if (character == undefined) return;
 
   try {
@@ -16,10 +17,10 @@ export const save = async (character) => {
   }
 };
 
-export async function getCharacter(uid) {
+export async function getCharacter(uid: string) {
   try {
     const res = await db.collection("characters").doc(uid).get();
-    const character = res.data();
+    const character = res.data() as Character;
     if (!character) {
       const newCharacter = createCharacter(uid);
       await save(newCharacter);

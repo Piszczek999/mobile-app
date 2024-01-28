@@ -1,7 +1,11 @@
-import { auth, db } from "./firebase.js";
-import { createCharacter, getHead } from "./utils.js";
+import { auth, db } from "./firebase";
+import { createCharacter, getHead } from "./utils";
 
-export async function createUser(email, name, password) {
+export async function createUser(
+  email: string,
+  name: string,
+  password: string
+) {
   try {
     const { uid } = await auth.createUser({
       email: email,
@@ -15,7 +19,7 @@ export async function createUser(email, name, password) {
     await db.collection("characterHeads").doc(uid).set(getHead(newCharacter));
 
     return newCharacter;
-  } catch (error) {
+  } catch (error: any) {
     if (error.code === "auth/email-already-in-use") {
       throw "Email is already in use.";
     } else {
@@ -25,7 +29,7 @@ export async function createUser(email, name, password) {
   }
 }
 
-export async function signIn(tokenId) {
+export async function signIn(tokenId: string): Promise<string> {
   try {
     const { uid } = await auth.verifyIdToken(tokenId);
     return uid;

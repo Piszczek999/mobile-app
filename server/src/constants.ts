@@ -1,4 +1,6 @@
-export const maps = {
+import { Maps } from "./types";
+
+export const maps: Maps = {
   fields: {
     id: "fields",
     duration: 1 * 60 * 1000,
