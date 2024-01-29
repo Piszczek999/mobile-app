@@ -3,8 +3,9 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { StatusBar } from "expo-status-bar";
 import { Fragment } from "react";
 import { StyleSheet, View } from "react-native";
-import { RootStackParamList } from "../App";
+import { RootStackParamList } from "../Base";
 import Armor from "../shared/Armor";
+import { useCharacter } from "../shared/CharacterContext";
 import Inventory from "../shared/Inventory";
 import Stats from "../shared/Stats";
 import Tile from "../shared/Tile";
@@ -21,7 +22,9 @@ type Props = {
   navigation: ProfileScreenNavigationProp;
 };
 export default function Profile({ route, navigation }: Props) {
-  const character = route.params.user;
+  const { character } = useCharacter();
+  if (!character) return;
+
   const { uid, name, level, exp, gold, weapon, armor, inventory } = character;
 
   return (

@@ -9,7 +9,6 @@ import {
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
-import { FirebaseError } from "firebase/app";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -17,7 +16,7 @@ import {
 } from "firebase/auth";
 import { Fragment, useEffect, useState } from "react";
 import { auth } from "../firebase";
-import { login, logout, socket } from "../socket";
+import { login, logout } from "../socket";
 import { globalStyles } from "../styles/global";
 import Input from "./Input";
 import MyButton from "./MyButton";
@@ -29,17 +28,21 @@ export default function Login() {
   const [isRegister, setIsRegister] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  onAuthStateChanged(auth, (user) => {
-    const handle = async () => {
-      if (user) {
-        const token = await user.getIdToken();
-        login(token);
-      } else {
-        logout();
-      }
-    };
-    handle();
-  });
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(auth, async (user) => {
+  //     const handle = async () => {
+  //       if (user) {
+  //         const token = await user.getIdToken();
+  //         login(token);
+  //       } else {
+  //         logout();
+  //       }
+  //     };
+  //     handle();
+  //   });
+
+  //   return () => unsubscribe();
+  // }, []);
 
   const storeCredentials = async () => {
     try {
@@ -56,20 +59,15 @@ export default function Login() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       await storeCredentials();
-    } catch (error) {
-      if (error! instanceof FirebaseError) {
-        if (error.code === "auth/invalid-credential") {
-          alert("Password or email is incorrect");
-        } else if (error.code === "auth/invalid-email") {
-          alert("Email is incorrect");
-        } else if (error.code === "auth/missing-email") {
-          alert("Email is missing");
-        } else if (error.code === "auth/missing-password") {
-          alert("Password is missing");
-        } else {
-          alert("An error occurred during user creation.");
-          console.error(error);
-        }
+    } catch (error: any) {
+      if (error.code === "auth/invalid-credential") {
+        alert("Password or email is incorrect");
+      } else if (error.code === "auth/invalid-email") {
+        alert("Email is incorrect");
+      } else if (error.code === "auth/missing-email") {
+        alert("Email is missing");
+      } else if (error.code === "auth/missing-password") {
+        alert("Password is missing");
       } else {
         alert("An error occurred during user creation.");
         console.error(error);
@@ -81,20 +79,15 @@ export default function Login() {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       await storeCredentials();
-    } catch (error) {
-      if (error! instanceof FirebaseError) {
-        if (error.code === "auth/email-already-in-use") {
-          alert("Email is already in use.");
-        } else if (error.code === "auth/missing-password") {
-          alert("Type in password");
-        } else if (error.code === "auth/invalid-email") {
-          alert("Email is incorrect");
-        } else if (error.code === "auth/admin-restricted-operation") {
-          alert("Type in email and password");
-        } else {
-          alert("An error occurred during user creation.");
-          console.error(error);
-        }
+    } catch (error: any) {
+      if (error.code === "auth/email-already-in-use") {
+        alert("Email is already in use.");
+      } else if (error.code === "auth/missing-password") {
+        alert("Type in password");
+      } else if (error.code === "auth/invalid-email") {
+        alert("Email is incorrect");
+      } else if (error.code === "auth/admin-restricted-operation") {
+        alert("Type in email and password");
       } else {
         alert("An error occurred during user creation.");
         console.error(error);
@@ -114,18 +107,13 @@ export default function Login() {
           setPassword(storedPassword);
           try {
             await signInWithEmailAndPassword(auth, storedEmail, storedPassword);
-          } catch (error) {
-            if (error! instanceof FirebaseError) {
-              if (error.code === "auth/email-already-in-use") {
-                alert("Email is already in use.");
-              } else if (error.code === "auth/missing-password") {
-                alert("Type in password");
-              } else if (error.code === "auth/invalid-email") {
-                alert("Email is incorrect");
-              } else {
-                alert("An error occurred during user creation.");
-                console.error(error);
-              }
+          } catch (error: any) {
+            if (error.code === "auth/email-already-in-use") {
+              alert("Email is already in use.");
+            } else if (error.code === "auth/missing-password") {
+              alert("Type in password");
+            } else if (error.code === "auth/invalid-email") {
+              alert("Email is incorrect");
             } else {
               alert("An error occurred during user creation.");
               console.error(error);

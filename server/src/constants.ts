@@ -1,6 +1,6 @@
-import { Maps } from "./types";
+import { Items, Maps } from "./types";
 
-export const maps: Maps = {
+export const MAPS: Maps = {
   fields: {
     id: "fields",
     duration: 1 * 60 * 1000,
@@ -9,11 +9,17 @@ export const maps: Maps = {
     drop: [
       {
         id: "deerhorns",
+        name: "Deer horns",
+        type: "ingredient",
+        equipable: false,
         count: 3,
         chance: 0.2,
       },
       {
         id: "flint",
+        name: "Flint",
+        type: "ingredient",
+        equipable: false,
         count: 3,
         chance: 0.2,
       },

@@ -17,3 +17,5 @@ export const explorationStart = (mapId: string) => {
 export const explorationComplete = () => {
   socket.emit("explorationComplete");
 };
+
+export const handleAlert = (message: any) => alert(message);

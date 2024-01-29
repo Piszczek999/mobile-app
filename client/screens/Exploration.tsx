@@ -1,16 +1,18 @@
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { StatusBar } from "expo-status-bar";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { View } from "react-native";
-import { RootStackParamList } from "../App";
+import { RootStackParamList } from "../Base";
 import { FIELDS, MOUNTAINS } from "../images";
+import { useCharacter } from "../shared/CharacterContext";
 import MapModal from "../shared/MapModal";
 import MapTile from "../shared/MapTile";
 import Tile from "../shared/Tile";
 import { globalStyles } from "../styles/global";
-import { Character, Map } from "../types";
-import { explorationComplete } from "../socket";
+import { Map } from "../types";
+import { useFocusEffect } from "@react-navigation/native";
+import { socket } from "../socket";
 
 type ExplorationScreenRouteProp = RouteProp<RootStackParamList, "Exploration">;
 
@@ -25,9 +27,17 @@ type Props = {
 };
 
 export default function Exploration({ route, navigation }: Props) {
-  const character: Character = route.params.user;
+  const { character } = useCharacter();
+  if (!character) return;
+
   const { level, exploration } = character;
   const [selectedMap, setSelectedMap] = useState<Map | undefined>();
+
+  useFocusEffect(
+    useCallback(() => {
+      socket.emit("receiveRewards");
+    }, [character])
+  );
 
   const maps: { [key: string]: Map } = {
     fields: {
@@ -45,12 +55,6 @@ export default function Exploration({ route, navigation }: Props) {
       duration: 1,
     },
   };
-  console.log("Exploration: ");
-  console.log(character);
-
-  useEffect(() => {
-    console.log("update!");
-  }, [character]);
 
   return (
     <Fragment>

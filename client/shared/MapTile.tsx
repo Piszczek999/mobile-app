@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   ImageBackground,
   StyleSheet,
@@ -7,8 +8,6 @@ import {
 } from "react-native";
 import { Shadow } from "react-native-shadow-2";
 import { Exploration, Map } from "../types";
-import { useEffect, useState } from "react";
-import { explorationComplete } from "../socket";
 
 type Props = {
   map: Map;
@@ -38,7 +37,7 @@ export default function MapTile({
         if (currentProgress >= 1) {
           clearInterval(intervalId);
         }
-      }, 1000);
+      }, 200);
 
       return () => clearInterval(intervalId);
     }

@@ -7,7 +7,7 @@ export default function Stats({ character }: { character: Character }) {
   const { uid, name, level, exp, gold, weapon, armor, inventory } = character;
 
   return (
-    <View style={{ flexGrow: 1 }}>
+    <View style={{ flexGrow: 1, overflow: "hidden" }}>
       <Shadow startColor="#0005" offset={[2, 2]} stretch distance={3}>
         <Tile
           colors={["#666", "#555"]}

@@ -3,9 +3,9 @@ import { Text, View } from "react-native";
 import { globalStyles } from "../styles/global";
 import { Fragment } from "react";
 import { StatusBar } from "expo-status-bar";
-import { RootStackParamList } from "../App";
 import { StackNavigationProp } from "@react-navigation/stack";
 import Tile from "../shared/Tile";
+import { RootStackParamList } from "../Base";
 
 type HomeScreenRouteProp = RouteProp<RootStackParamList, "Home">;
 

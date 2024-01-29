@@ -1,7 +1,5 @@
-import { Socket } from "socket.io";
-import { maps } from "./constants";
-import { save } from "./firestore";
-import { Character } from "./types";
+import { MAPS } from "./constants";
+import { Character, Item } from "./types";
 
 export function validateCharacter(character: Character) {
   return {
@@ -47,27 +45,42 @@ export function getHead(character: Character) {
   };
 }
 
-export function explorationComplete(socket: Socket, ch: Character) {
+export function receiveRewards(ch: Character) {
   if (!ch.exploration) return;
-  const map = maps[ch.exploration.mapId];
+  const map = MAPS[ch.exploration.mapId];
   ch.exp += map.exp + (Math.random() * map.exp) / 5;
   ch.gold += map.gold + (Math.random() * map.gold) / 5;
 
-  const rewards = map.drop
-    .map((item) => {
+  const rewards: (Item | null)[] = map.drop
+    .map((dropItem) => {
       let count = 0;
-      for (let index = 0; index < item.count; index++) {
-        if (Math.random() < item.chance) count++;
+      for (let index = 0; index < dropItem.count; index++) {
+        if (Math.random() < dropItem.chance) count++;
       }
-      return count ? { count, id: item.id } : null;
+      const { chance, ...item } = dropItem;
+      return count ? item : null;
     })
     .filter((item) => item !== null);
 
-  console.log(rewards);
+  rewards.forEach((reward) => {
+    if (!reward) return;
+    if (reward.equipable) {
+      ch.inventory.push(reward);
+    } else {
+      const existingItem = ch.inventory.find((item) => item.id === reward.id);
+
+      if (existingItem) {
+        if (existingItem.count) existingItem.count += reward.count;
+      } else {
+        ch.inventory.push(reward);
+      }
+    }
+  });
 
   ch.exploration = null;
-  save(ch);
-
-  socket.emit("alert", "Exploration Completed");
-  socket.emit("updateCharacter", ch);
 }
+
+export const explorationComplete = (ch: Character) => {
+  if (!ch.exploration) return;
+  ch.exploration.completed = true;
+};

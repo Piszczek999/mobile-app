@@ -1,8 +1,9 @@
+type ItemType = "ingredient" | "equipable" | "other";
+
 export type DropItem = {
-  id: string;
   count: number;
   chance: number;
-};
+} & Item;
 
 export type Map = {
   id: string;
@@ -32,23 +33,23 @@ export type Character = {
   inventory: Item[];
 };
 
-export type Item =
-  | {
-      id: string;
-      name: string;
-      type: string;
-      slot: string;
-      bonuses: any;
-    }
-  | {
-      id: string;
-      name: string;
-      type: string;
-      count: number;
-    };
+export type Item = {
+  id: string;
+  name: string;
+  type: ItemType;
+  count: number;
+  equipable: boolean;
+  slot?: string;
+  bonuses?: any;
+};
+
+export type Items = {
+  [key: string]: Item;
+};
 
 export type Exploration = {
   mapId: string;
   startTime: number;
   duration: number;
+  completed: boolean;
 };
