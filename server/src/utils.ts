@@ -53,12 +53,12 @@ export function receiveRewards(ch: Character) {
 
   const rewards: (Item | null)[] = map.drop
     .map((dropItem) => {
-      let count = 0;
+      let successCount = 0;
       for (let index = 0; index < dropItem.count; index++) {
-        if (Math.random() < dropItem.chance) count++;
+        if (Math.random() < dropItem.chance) successCount++;
       }
-      const { chance, ...item } = dropItem;
-      return count ? item : null;
+      const { chance, count, ...item } = dropItem;
+      return successCount ? { ...item, count } : null;
     })
     .filter((item) => item !== null);
 
