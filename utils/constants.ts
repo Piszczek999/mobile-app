@@ -1,3 +1,26 @@
+import { Map } from "./types";
+
+export const maps: { [key: string]: Map } = {
+  fields: {
+    id: "fields",
+    title: "Fields",
+    minLevel: 1,
+    duration: 1,
+    drop: [
+      { id: "flint", name: "Flint" },
+      { id: "boar_skin", name: "Boar Skin" },
+      { id: "magical_flower", name: "Magical Flower" },
+    ],
+  },
+  mountains: {
+    id: "mountains",
+    title: "Mountains",
+    minLevel: 10,
+    duration: 1,
+    drop: [],
+  },
+};
+
 // (base+1/lv*100)*1,2
 export const LEVELS: { [key: number]: number } = {
   1: 100,

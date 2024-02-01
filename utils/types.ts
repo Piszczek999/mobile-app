@@ -1,4 +1,4 @@
-type ItemType = "ingredient" | "equipable" | "other";
+export type ItemType = "ingredient" | "equipable" | "other";
 
 export type Item = {
   id: string;
@@ -8,6 +8,11 @@ export type Item = {
   equipable: boolean;
   slot?: string;
   bonuses?: any;
+};
+
+export type DropItem = {
+  id: string;
+  name: string;
 };
 
 export type Character = {
@@ -31,6 +36,7 @@ export type Map = {
   title: string;
   minLevel: number;
   duration: number;
+  drop: DropItem[];
 };
 
 export type Exploration = {

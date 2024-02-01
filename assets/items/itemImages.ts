@@ -2,8 +2,8 @@ import { ImageSourcePropType } from "react-native";
 
 const itemImages: { [key: string]: ImageSourcePropType } = {
   flint: require("./flint.png"),
-  deerhorns: require("./deerhorns.png"),
-  magicalflower: require("./magicalflower.png"),
+  boar_skin: require("./boar_skin.png"),
+  magical_flower: require("./magical_flower.png"),
 };
 
 export default itemImages;

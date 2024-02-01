@@ -1,19 +1,18 @@
-import { RouteProp } from "@react-navigation/native";
+import { RouteProp, useFocusEffect } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { StatusBar } from "expo-status-bar";
-import { Fragment, useCallback, useEffect, useState } from "react";
-import { Modal, Pressable, Text, View } from "react-native";
+import { Fragment, useCallback, useState } from "react";
+import { View } from "react-native";
 import { RootStackParamList } from "../../Base";
 import { useCharacter } from "../../shared/CharacterContext";
-import MapModal from "./MapModal";
-import MapTile from "./MapTile";
 import Tile from "../../shared/Tile";
+import { socket } from "../../socket";
 import { globalStyles } from "../../styles/global";
 import { Map } from "../../utils/types";
-import { useFocusEffect } from "@react-navigation/native";
-import { socket } from "../../socket";
-import MyButton from "../../shared/MyButton";
+import MapModal from "./MapModal";
+import MapTile from "./MapTile";
 import RewardModal from "./RewardModal";
+import { maps } from "../../utils/constants";
 
 type ExplorationScreenRouteProp = RouteProp<RootStackParamList, "Exploration">;
 
@@ -41,21 +40,6 @@ export default function Exploration({ route, navigation }: Props) {
       if (rewards) setRewardVisible(true);
     }, [character, rewards])
   );
-
-  const maps: { [key: string]: Map } = {
-    fields: {
-      id: "fields",
-      title: "Fields",
-      minLevel: 1,
-      duration: 1,
-    },
-    mountains: {
-      id: "mountains",
-      title: "Mountains",
-      minLevel: 10,
-      duration: 1,
-    },
-  };
 
   return (
     <Fragment>

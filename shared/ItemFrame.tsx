@@ -1,15 +1,22 @@
-import { ImageBackground, Pressable, Text, View } from "react-native";
+import {
+  GestureResponderEvent,
+  ImageBackground,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
 import itemImages from "../assets/items/itemImages";
 import { Item } from "../utils/types";
 import Tile from "./Tile";
 
 type Props = {
   item: Item;
+  onPress?: (event: GestureResponderEvent) => void;
 };
 
-export default function ItemFrame({ item }: Props) {
+export default function ItemFrame({ item, onPress }: Props) {
   return (
-    <Pressable>
+    <Pressable onPress={onPress}>
       <Tile colors={["#666", "#555"]}>
         <ImageBackground
           source={itemImages[item.id]}
