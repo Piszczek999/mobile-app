@@ -1,19 +1,16 @@
 import { ImageSourcePropType } from "react-native";
 
-export type Item =
-  | {
-      id: string;
-      name: string;
-      type: string;
-      slot: string;
-      bonuses: any;
-    }
-  | {
-      id: string;
-      name: string;
-      type: string;
-      count: number;
-    };
+type ItemType = "ingredient" | "equipable" | "other";
+
+export type Item = {
+  id: string;
+  name: string;
+  type: ItemType;
+  count: number;
+  equipable: boolean;
+  slot?: string;
+  bonuses?: any;
+};
 
 export type Character = {
   uid: string;

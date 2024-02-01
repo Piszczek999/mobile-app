@@ -66,7 +66,6 @@ const Base: React.FC = () => {
   const handleUpdateCharacter = (character: Character) => {
     setCharacter(character);
     setLogged(true);
-    console.log("update");
   };
 
   const handleLogout = async () => {

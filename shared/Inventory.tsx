@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import { Item } from "../types";
 import Tile from "./Tile";
+import ItemFrame from "./ItemFrame";
 
 export default function Inventory({ items }: { items: Item[] }) {
   return (
@@ -26,9 +27,9 @@ export default function Inventory({ items }: { items: Item[] }) {
         </Tile>
       </View>
       <View>
-        {/* {items.map((item) => (
-          <View style={globalStyles.itemFrame}></View>
-        ))} */}
+        {items.map((item) => (
+          <ItemFrame item={item} />
+        ))}
       </View>
     </Tile>
   );
