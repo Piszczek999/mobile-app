@@ -1,9 +1,9 @@
 import {
   ActivityIndicator,
   Keyboard,
+  Pressable,
   StyleSheet,
   Text,
-  TouchableWithoutFeedback,
   View,
 } from "react-native";
 
@@ -11,12 +11,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
 import {
   createUserWithEmailAndPassword,
-  onAuthStateChanged,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { Fragment, useEffect, useState } from "react";
 import { auth } from "../firebase";
-import { login, logout } from "../socket";
 import { globalStyles } from "../styles/global";
 import Input from "./Input";
 import MyButton from "./MyButton";
@@ -27,22 +25,6 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [isRegister, setIsRegister] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, async (user) => {
-  //     const handle = async () => {
-  //       if (user) {
-  //         const token = await user.getIdToken();
-  //         login(token);
-  //       } else {
-  //         logout();
-  //       }
-  //     };
-  //     handle();
-  //   });
-
-  //   return () => unsubscribe();
-  // }, []);
 
   const storeCredentials = async () => {
     try {
@@ -142,7 +124,7 @@ export default function Login() {
   return (
     <Fragment>
       <StatusBar style="light" />
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <Pressable onPress={() => Keyboard.dismiss()}>
         <Tile style={globalStyles.container}>
           {isRegister ? (
             <View style={styles.content}>
@@ -194,7 +176,7 @@ export default function Login() {
             </View>
           )}
         </Tile>
-      </TouchableWithoutFeedback>
+      </Pressable>
     </Fragment>
   );
 }

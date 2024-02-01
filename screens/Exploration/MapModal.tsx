@@ -1,8 +1,9 @@
-import { ImageBackground, Text, TouchableOpacity } from "react-native";
-import { Map } from "../types";
-import Tile from "./Tile";
-import MyButton from "./MyButton";
-import { explorationStart } from "../socket";
+import { ImageBackground, Pressable } from "react-native";
+import mapImages from "../../assets/maps/mapImages";
+import { explorationStart } from "../../socket";
+import { Map } from "../../utils/types";
+import MyButton from "../../shared/MyButton";
+import Tile from "../../shared/Tile";
 
 type Props = {
   map: Map;
@@ -10,7 +11,7 @@ type Props = {
 };
 
 export default function MapModal({ map, setSelectedMap }: Props) {
-  const { title, image, minLevel } = map;
+  const { id, title, minLevel } = map;
 
   const handleStart = () => {
     explorationStart(map.id);
@@ -18,8 +19,7 @@ export default function MapModal({ map, setSelectedMap }: Props) {
   };
 
   return (
-    <TouchableOpacity
-      activeOpacity={1}
+    <Pressable
       onPress={() => setSelectedMap(undefined)}
       style={{
         position: "absolute",
@@ -35,11 +35,11 @@ export default function MapModal({ map, setSelectedMap }: Props) {
     >
       <Tile style={{ width: "90%" }} colors={["#666", "#555"]}>
         <ImageBackground
-          source={image}
+          source={mapImages[id]}
           style={{ height: 100, elevation: 5 }}
         ></ImageBackground>
         <MyButton onPress={handleStart}>Start</MyButton>
       </Tile>
-    </TouchableOpacity>
+    </Pressable>
   );
 }

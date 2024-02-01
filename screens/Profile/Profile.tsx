@@ -3,12 +3,13 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { StatusBar } from "expo-status-bar";
 import { Fragment } from "react";
 import { StyleSheet, View } from "react-native";
-import { RootStackParamList } from "../Base";
-import Armor from "../shared/Armor";
-import { useCharacter } from "../shared/CharacterContext";
-import Inventory from "../shared/Inventory";
-import Stats from "../shared/Stats";
-import Tile from "../shared/Tile";
+import { RootStackParamList } from "../../Base";
+import Armor from "./Armor";
+import { useCharacter } from "../../shared/CharacterContext";
+import Inventory from "./Inventory";
+import Stats from "./Stats";
+import Tile from "../../shared/Tile";
+import Expbar from "./Expbar";
 
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, "Profile">;
 
@@ -41,6 +42,7 @@ export default function Profile({ route, navigation }: Props) {
           <Stats character={character} />
           <Armor />
         </View>
+        <Expbar character={character} />
         <Inventory items={inventory} />
       </Tile>
     </Fragment>

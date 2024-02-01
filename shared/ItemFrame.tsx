@@ -1,6 +1,7 @@
-import { ImageBackground, Text, TouchableOpacity, View } from "react-native";
-import { Shadow } from "react-native-shadow-2";
-import { Item } from "../types";
+import { ImageBackground, Pressable, Text, View } from "react-native";
+import itemImages from "../assets/items/itemImages";
+import { Item } from "../utils/types";
+import Tile from "./Tile";
 
 type Props = {
   item: Item;
@@ -8,13 +9,13 @@ type Props = {
 
 export default function ItemFrame({ item }: Props) {
   return (
-    <Shadow startColor="#0002" offset={[2, 3]} stretch distance={5}>
-      <TouchableOpacity activeOpacity={0.8}>
+    <Pressable>
+      <Tile colors={["#666", "#555"]}>
         <ImageBackground
-          source={require(`../assets/${item.id}.png`)}
-          style={{ height: 50, width: 50, flexGrow: 1 }}
+          source={itemImages[item.id]}
+          style={{ height: 60, width: 60 }}
         >
-          <View style={{ flex: 1 }}>
+          <View>
             <Text
               style={{
                 textAlign: "right",
@@ -25,7 +26,7 @@ export default function ItemFrame({ item }: Props) {
             </Text>
           </View>
         </ImageBackground>
-      </TouchableOpacity>
-    </Shadow>
+      </Tile>
+    </Pressable>
   );
 }

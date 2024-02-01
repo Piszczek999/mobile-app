@@ -6,18 +6,18 @@ import {
 import { NavigationContainer } from "@react-navigation/native";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { Pressable } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 import { auth } from "./firebase";
-import Exploration from "./screens/Exploration";
+import Exploration from "./screens/Exploration/Exploration";
 import Home from "./screens/Home";
-import Profile from "./screens/Profile";
+import Profile from "./screens/Profile/Profile";
+import { useCharacter } from "./shared/CharacterContext";
 import Login from "./shared/Login";
 import TabBar from "./shared/TabBar";
 import { handleAlert, login, logout, socket } from "./socket";
 import { globalStyles } from "./styles/global";
-import Icon from "react-native-vector-icons/FontAwesome";
-import { Character } from "./types";
-import { useCharacter } from "./shared/CharacterContext";
+import { Character, Rewards } from "./utils/types";
 
 export type RootStackParamList = {
   Exploration: { icon: string; user: any };
@@ -29,7 +29,7 @@ const Tab = createBottomTabNavigator<RootStackParamList>();
 
 const Base: React.FC = () => {
   const [logged, setLogged] = useState(false);
-  const { character, setCharacter } = useCharacter();
+  const { character, setCharacter, rewards, setRewards } = useCharacter();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -42,13 +42,14 @@ const Base: React.FC = () => {
     });
     socket.on("alert", handleAlert);
     socket.on("updateCharacter", handleUpdateCharacter);
-
+    socket.on("rewards", handleRewards);
     socket.on("logout", handleOnLogout);
 
     return () => {
       unsubscribe();
       socket.off("alert", handleAlert);
       socket.off("updateCharacter", handleUpdateCharacter);
+      socket.off("rewards", handleRewards);
       socket.off("logout", handleOnLogout);
     };
   }, [socket]);
@@ -56,6 +57,10 @@ const Base: React.FC = () => {
   const screenOptions: BottomTabNavigationOptions = {
     headerStyle: globalStyles.screenHeader,
     headerTitleStyle: globalStyles.screenTitle,
+  };
+
+  const handleRewards = (rewards: Rewards) => {
+    setRewards(rewards);
   };
 
   const handleOnLogout = () => {
@@ -101,14 +106,14 @@ const Base: React.FC = () => {
           options={({ navigation }) => ({
             ...screenOptions,
             headerRight: () => (
-              <TouchableOpacity
+              <Pressable
                 onPress={async () => {
                   await handleLogout();
                 }}
                 style={{ marginRight: 16 }}
               >
                 <Icon name="sign-out" color="white" size={30} />
-              </TouchableOpacity>
+              </Pressable>
             ),
           })}
         />

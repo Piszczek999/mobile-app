@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 export type TabBarProps = {
@@ -44,8 +44,7 @@ export default function TabBar({
         };
 
         return (
-          <TouchableOpacity
-            activeOpacity={0.9}
+          <Pressable
             key={index}
             accessibilityRole="button"
             accessibilityState={isFocused ? { selected: true } : {}}
@@ -68,7 +67,7 @@ export default function TabBar({
             >
               <Icon name={route.params?.icon} size={35} />
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         );
       })}
     </View>

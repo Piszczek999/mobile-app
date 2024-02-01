@@ -1,38 +1,38 @@
 import { StyleSheet, View } from "react-native";
-import TileWithShadow from "./TileWithShadow";
+import Tile from "../../shared/Tile";
 
 export default function Armor() {
   return (
     <View style={{ display: "flex", flexDirection: "row", gap: 5 }}>
       <View style={styles.armorColumn}>
-        <TileWithShadow
+        <Tile
           colors={["#666", "#555"]}
           style={{ width: 60, height: 60 }}
-        ></TileWithShadow>
+        ></Tile>
       </View>
       <View style={styles.armorColumn}>
-        <TileWithShadow
+        <Tile
           colors={["#666", "#555"]}
           style={{ width: 60, height: 60 }}
-        ></TileWithShadow>
-        <TileWithShadow
+        ></Tile>
+        <Tile
           colors={["#666", "#555"]}
           style={{ width: 60, height: 60 }}
-        ></TileWithShadow>
-        <TileWithShadow
+        ></Tile>
+        <Tile
           colors={["#666", "#555"]}
           style={{ width: 60, height: 60 }}
-        ></TileWithShadow>
+        ></Tile>
       </View>
       <View style={styles.armorColumn}>
-        <TileWithShadow
+        <Tile
           colors={["#666", "#555"]}
           style={{ width: 60, height: 60 }}
-        ></TileWithShadow>
-        <TileWithShadow
+        ></Tile>
+        <Tile
           colors={["#666", "#555"]}
           style={{ width: 60, height: 60 }}
-        ></TileWithShadow>
+        ></Tile>
       </View>
     </View>
   );

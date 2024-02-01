@@ -1,5 +1,3 @@
-import { ImageSourcePropType } from "react-native";
-
 type ItemType = "ingredient" | "equipable" | "other";
 
 export type Item = {
@@ -31,7 +29,6 @@ export type Character = {
 export type Map = {
   id: string;
   title: string;
-  image: ImageSourcePropType;
   minLevel: number;
   duration: number;
 };
@@ -40,4 +37,12 @@ export type Exploration = {
   mapId: string;
   startTime: number;
   duration: number;
+  completed: boolean;
+};
+
+export type Rewards = {
+  exp: number;
+  gold: number;
+  items?: Item[];
+  mapId: string;
 };

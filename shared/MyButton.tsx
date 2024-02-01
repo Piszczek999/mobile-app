@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 import {
   GestureResponderEvent,
+  Pressable,
   StyleProp,
   StyleSheet,
   Text,
   TextStyle,
-  TouchableOpacity,
   ViewStyle,
 } from "react-native";
 import Tile, { TileProps } from "./Tile";
@@ -25,7 +25,7 @@ export default function MyButton({
   ...props
 }: Props) {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <Pressable onPress={onPress}>
       <Tile
         colors={["#373", "#363"]}
         style={[style, { paddingHorizontal: 10, paddingVertical: 5 }]}
@@ -33,7 +33,7 @@ export default function MyButton({
       >
         <Text style={[styles.title, textStyle]}>{children}</Text>
       </Tile>
-    </TouchableOpacity>
+    </Pressable>
   );
 }
 
