@@ -8,15 +8,18 @@ import {
 import itemImages from "../assets/items/itemImages";
 import { DropItem, Item } from "../utils/types";
 import Tile from "./Tile";
+import { useState } from "react";
+import ItemModal from "./ItemModal";
 
 type Props = {
   item: Item | DropItem;
-  onPress?: (event: GestureResponderEvent) => void;
 };
 
-export default function ItemFrame({ item, onPress }: Props) {
+export default function ItemFrame({ item }: Props) {
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
-    <Pressable onPress={onPress}>
+    <Pressable onPress={() => setModalVisible(true)}>
       <Tile colors={["#666", "#555"]}>
         <ImageBackground
           source={itemImages[item.id]}
@@ -34,6 +37,11 @@ export default function ItemFrame({ item, onPress }: Props) {
           )}
         </ImageBackground>
       </Tile>
+      <ItemModal
+        item={item}
+        visible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
     </Pressable>
   );
 }

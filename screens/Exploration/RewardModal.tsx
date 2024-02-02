@@ -28,7 +28,7 @@ export default function RewardModal({ visible, setRewardVisible }: Props) {
       onRequestClose={handleClose}
     >
       <Pressable style={styles.background} onPress={handleClose}>
-        <Pressable>
+        <Pressable style={{ width: "80%" }}>
           <Tile colors={["#666", "#444"]} style={styles.modal}>
             <View
               style={{
@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
   },
   modal: {
     padding: 35,
-    width: "80%",
     alignItems: "center",
     display: "flex",
     gap: 20,

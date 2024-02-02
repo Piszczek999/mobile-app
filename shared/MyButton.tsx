@@ -25,22 +25,25 @@ export default function MyButton({
   ...props
 }: Props) {
   return (
-    <Pressable onPress={onPress}>
-      <Tile
-        colors={["#373", "#363"]}
-        style={[style, { paddingHorizontal: 20, paddingVertical: 5 }]}
-        {...props}
+    <Tile
+      colors={["#373", "#363"]}
+      style={[style, { paddingHorizontal: 20, paddingVertical: 5 }]}
+      {...props}
+    >
+      <Pressable
+        onPress={onPress}
+        style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}
       >
         <Text style={[styles.title, textStyle]}>{children}</Text>
-      </Tile>
-    </Pressable>
+      </Pressable>
+    </Tile>
   );
 }
 
 const styles = StyleSheet.create({
   title: {
     textTransform: "uppercase",
-    color: "lightgray",
+    color: "white",
     fontWeight: "bold",
     fontSize: 30,
     textAlign: "center",

@@ -41,46 +41,56 @@ export default function MapModal({ visible, map, setSelectedMap }: Props) {
       onRequestClose={handleClose}
     >
       <Pressable style={styles.background} onPress={handleClose}>
-        <Tile style={styles.modal} colors={["#666", "#444"]}>
-          <ImageBackground
-            source={mapImages[id]}
-            style={{ height: 100, width: "100%" }}
-          ></ImageBackground>
-          <View
-            style={{
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <Text style={{ color: "white", fontSize: 30, fontWeight: "bold" }}>
-              Details:
-            </Text>
-            <Text style={{ color: "white", fontSize: 20, fontWeight: "bold" }}>
-              {"Required level: " + map.minLevel}
-            </Text>
-            <Text style={{ color: "white", fontSize: 20, fontWeight: "bold" }}>
-              {"Time: " + formatTime(map.duration)}
-            </Text>
-          </View>
-          <View
-            style={{
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <Text style={{ color: "white", fontSize: 30, fontWeight: "bold" }}>
-              Possible drop:
-            </Text>
-            <View style={{ display: "flex", flexDirection: "row", gap: 5 }}>
-              {map.drop.map((item) => (
-                <ItemFrame key={item.id} item={item} />
-              ))}
+        <Pressable style={{ width: "80%" }}>
+          <Tile style={styles.modal} colors={["#666", "#444"]}>
+            <ImageBackground
+              source={mapImages[id]}
+              style={{ height: 100, width: "100%" }}
+            ></ImageBackground>
+            <View
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{ color: "white", fontSize: 30, fontWeight: "bold" }}
+              >
+                Details:
+              </Text>
+              <Text
+                style={{ color: "white", fontSize: 20, fontWeight: "bold" }}
+              >
+                {"Required level: " + map.minLevel}
+              </Text>
+              <Text
+                style={{ color: "white", fontSize: 20, fontWeight: "bold" }}
+              >
+                {"Time: " + formatTime(map.duration)}
+              </Text>
             </View>
-          </View>
-          <MyButton onPress={handleStart} style={{ marginBottom: 10 }}>
-            Start
-          </MyButton>
-        </Tile>
+            <View
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{ color: "white", fontSize: 30, fontWeight: "bold" }}
+              >
+                Possible drop:
+              </Text>
+              <View style={{ display: "flex", flexDirection: "row", gap: 5 }}>
+                {map.drop.map((item) => (
+                  <ItemFrame key={item.id} item={item} />
+                ))}
+              </View>
+            </View>
+            <MyButton onPress={handleStart} style={{ marginBottom: 10 }}>
+              Start
+            </MyButton>
+          </Tile>
+        </Pressable>
       </Pressable>
     </Modal>
   );
@@ -95,7 +105,6 @@ const styles = StyleSheet.create({
   },
   modal: {
     display: "flex",
-    width: "80%",
     alignItems: "center",
     gap: 20,
   },
