@@ -26,7 +26,7 @@ export default function MyButton({
 }: Props) {
   return (
     <Tile
-      colors={["#373", "#363"]}
+      colors={["#383", "#363"]}
       style={[style, { paddingHorizontal: 20, paddingVertical: 5 }]}
       {...props}
     >

@@ -1,9 +1,17 @@
 import React, { Fragment } from "react";
-import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  ImageBackground,
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { useCharacter } from "../../shared/CharacterContext";
 import MyButton from "../../shared/MyButton";
 import Tile from "../../shared/Tile";
 import ItemFrame from "../../shared/ItemFrame";
+import mapImages from "../../assets/maps/mapImages";
 
 type Props = {
   visible: boolean;
@@ -29,6 +37,19 @@ export default function RewardModal({ visible, setRewardVisible }: Props) {
     >
       <Pressable style={styles.background} onPress={handleClose}>
         <Pressable style={{ width: "80%" }}>
+          <ImageBackground
+            source={mapImages[rewards.mapId]}
+            style={{
+              height: 100,
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text style={{ color: "yellow", fontSize: 30, fontWeight: "bold" }}>
+              SUCCESS!
+            </Text>
+          </ImageBackground>
           <Tile colors={["#666", "#444"]} style={styles.modal}>
             <View
               style={{
@@ -63,7 +84,7 @@ export default function RewardModal({ visible, setRewardVisible }: Props) {
               )}
             </View>
 
-            <MyButton onPress={handleClose}>Close</MyButton>
+            <MyButton onPress={handleClose}>Collect</MyButton>
           </Tile>
         </Pressable>
       </Pressable>
@@ -79,7 +100,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modal: {
-    padding: 35,
+    padding: 10,
     alignItems: "center",
     display: "flex",
     gap: 20,

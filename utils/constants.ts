@@ -10,6 +10,7 @@ export const maps: { [key: string]: Map } = {
       { id: "flint", name: "Flint" },
       { id: "boar_skin", name: "Boar Skin" },
       { id: "magical_flower", name: "Magical Flower" },
+      { id: "leather_boots", name: "Leather Boots" },
     ],
   },
   mountains: {

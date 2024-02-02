@@ -42,11 +42,11 @@ export default function MapModal({ visible, map, setSelectedMap }: Props) {
     >
       <Pressable style={styles.background} onPress={handleClose}>
         <Pressable style={{ width: "80%" }}>
+          <ImageBackground
+            source={mapImages[id]}
+            style={{ height: 100, width: "100%" }}
+          ></ImageBackground>
           <Tile style={styles.modal} colors={["#666", "#444"]}>
-            <ImageBackground
-              source={mapImages[id]}
-              style={{ height: 100, width: "100%" }}
-            ></ImageBackground>
             <View
               style={{
                 display: "flex",
@@ -86,9 +86,7 @@ export default function MapModal({ visible, map, setSelectedMap }: Props) {
                 ))}
               </View>
             </View>
-            <MyButton onPress={handleStart} style={{ marginBottom: 10 }}>
-              Start
-            </MyButton>
+            <MyButton onPress={handleStart}>Start</MyButton>
           </Tile>
         </Pressable>
       </Pressable>
@@ -104,6 +102,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modal: {
+    padding: 10,
     display: "flex",
     alignItems: "center",
     gap: 20,

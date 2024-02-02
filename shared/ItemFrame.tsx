@@ -17,6 +17,7 @@ type Props = {
 
 export default function ItemFrame({ item }: Props) {
   const [modalVisible, setModalVisible] = useState(false);
+  if (!item) return null;
 
   return (
     <Pressable onPress={() => setModalVisible(true)}>
@@ -25,7 +26,7 @@ export default function ItemFrame({ item }: Props) {
           source={itemImages[item.id]}
           style={{ height: 60, width: 60 }}
         >
-          {isItem(item) && (
+          {isItem(item) && item.type !== "equipable" && (
             <Text
               style={{
                 textAlign: "right",

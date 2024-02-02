@@ -10,6 +10,9 @@ import itemImages from "../assets/items/itemImages";
 import { DropItem, Item } from "../utils/types";
 import Tile from "./Tile";
 import MyButton from "./MyButton";
+import { Fragment } from "react";
+import { socket } from "../socket";
+import { useCharacter } from "./CharacterContext";
 
 type Props = {
   item: Item | DropItem;
@@ -18,7 +21,14 @@ type Props = {
 };
 
 export default function ItemModal({ visible, item, setModalVisible }: Props) {
+  const { setCharacter } = useCharacter();
+
   const handleClose = () => {
+    setModalVisible(false);
+  };
+
+  const handleEquip = () => {
+    socket.emit("equip", item);
     setModalVisible(false);
   };
 
@@ -61,7 +71,27 @@ export default function ItemModal({ visible, item, setModalVisible }: Props) {
                 alignItems: "center",
               }}
             >
-              {isItem(item) && <MyButton>Remove</MyButton>}
+              {isItem(item) && item.bonuses && (
+                <Text
+                  style={{ color: "white", fontSize: 20, fontWeight: "bold" }}
+                >
+                  Armor: {item.bonuses.armor}
+                </Text>
+              )}
+            </View>
+            <View
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              {isItem(item) && item.type === "equipable" ? (
+                <Fragment>
+                  <MyButton onPress={handleEquip}>Equip</MyButton>
+                </Fragment>
+              ) : (
+                <MyButton>Remove</MyButton>
+              )}
             </View>
           </Tile>
         </Pressable>

@@ -4,6 +4,7 @@ import {
   Pressable,
   StyleSheet,
   Text,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
 
@@ -124,7 +125,7 @@ export default function Login() {
   return (
     <Fragment>
       <StatusBar style="light" />
-      <Pressable onPress={() => Keyboard.dismiss()}>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <Tile style={globalStyles.container}>
           {isRegister ? (
             <View style={styles.content}>
@@ -143,9 +144,12 @@ export default function Login() {
                 placeholder="Password"
               />
               <MyButton onPress={async () => await handleRegister()}>
-                Sign In
+                Sign Up
               </MyButton>
-              <MyButton onPress={() => setIsRegister(false)}>
+              <MyButton
+                colors={["#44a", "#449"]}
+                onPress={() => setIsRegister(false)}
+              >
                 Log in instead
               </MyButton>
             </View>
@@ -172,11 +176,16 @@ export default function Login() {
               <MyButton onPress={async () => await handleLogin()}>
                 Sign in
               </MyButton>
-              <MyButton onPress={() => setIsRegister(true)}>Register</MyButton>
+              <MyButton
+                colors={["#44a", "#449"]}
+                onPress={() => setIsRegister(true)}
+              >
+                Register
+              </MyButton>
             </View>
           )}
         </Tile>
-      </Pressable>
+      </TouchableWithoutFeedback>
     </Fragment>
   );
 }
