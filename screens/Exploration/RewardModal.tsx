@@ -49,12 +49,10 @@ export default function RewardModal({ visible, setRewardVisible }: Props) {
               >
                 {"Exp: " + Math.floor(rewards.exp)}
               </Text>
-              <Text
-                style={{ color: "white", fontSize: 30, fontWeight: "bold" }}
-              >
-                Items found:
-              </Text>
             </View>
+            <Text style={{ color: "white", fontSize: 30, fontWeight: "bold" }}>
+              Items found:
+            </Text>
             <View style={{ display: "flex", flexDirection: "row", gap: 5 }}>
               {rewards.items ? (
                 rewards.items.map((item) => (
@@ -81,7 +79,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modal: {
-    backgroundColor: "white",
     padding: 35,
     width: "80%",
     alignItems: "center",

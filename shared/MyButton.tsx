@@ -28,7 +28,7 @@ export default function MyButton({
     <Pressable onPress={onPress}>
       <Tile
         colors={["#373", "#363"]}
-        style={[style, { paddingHorizontal: 10, paddingVertical: 5 }]}
+        style={[style, { paddingHorizontal: 20, paddingVertical: 5 }]}
         {...props}
       >
         <Text style={[styles.title, textStyle]}>{children}</Text>
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     color: "lightgray",
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 30,
     textAlign: "center",
   },
 });

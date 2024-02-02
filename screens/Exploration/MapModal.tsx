@@ -1,16 +1,27 @@
-import { ImageBackground, Pressable } from "react-native";
+import {
+  ImageBackground,
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import mapImages from "../../assets/maps/mapImages";
 import { explorationStart } from "../../socket";
 import { Map } from "../../utils/types";
 import MyButton from "../../shared/MyButton";
 import Tile from "../../shared/Tile";
+import { formatTime } from "../../utils/utils";
+import ItemFrame from "../../shared/ItemFrame";
 
 type Props = {
-  map: Map;
+  map: Map | undefined;
+  visible: boolean;
   setSelectedMap: React.Dispatch<React.SetStateAction<Map | undefined>>;
 };
 
-export default function MapModal({ map, setSelectedMap }: Props) {
+export default function MapModal({ visible, map, setSelectedMap }: Props) {
+  if (!map) return;
   const { id, title, minLevel } = map;
 
   const handleStart = () => {
@@ -18,28 +29,74 @@ export default function MapModal({ map, setSelectedMap }: Props) {
     setSelectedMap(undefined);
   };
 
+  const handleClose = () => {
+    setSelectedMap(undefined);
+  };
+
   return (
-    <Pressable
-      onPress={() => setSelectedMap(undefined)}
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
+    <Modal
+      animationType="slide"
+      transparent
+      visible={visible}
+      onRequestClose={handleClose}
     >
-      <Tile style={{ width: "90%" }} colors={["#666", "#555"]}>
-        <ImageBackground
-          source={mapImages[id]}
-          style={{ height: 100, elevation: 5 }}
-        ></ImageBackground>
-        <MyButton onPress={handleStart}>Start</MyButton>
-      </Tile>
-    </Pressable>
+      <Pressable style={styles.background} onPress={handleClose}>
+        <Tile style={styles.modal} colors={["#666", "#444"]}>
+          <ImageBackground
+            source={mapImages[id]}
+            style={{ height: 100, width: "100%" }}
+          ></ImageBackground>
+          <View
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ color: "white", fontSize: 30, fontWeight: "bold" }}>
+              Details:
+            </Text>
+            <Text style={{ color: "white", fontSize: 20, fontWeight: "bold" }}>
+              {"Required level: " + map.minLevel}
+            </Text>
+            <Text style={{ color: "white", fontSize: 20, fontWeight: "bold" }}>
+              {"Time: " + formatTime(map.duration)}
+            </Text>
+          </View>
+          <View
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ color: "white", fontSize: 30, fontWeight: "bold" }}>
+              Possible drop:
+            </Text>
+            <View style={{ display: "flex", flexDirection: "row", gap: 5 }}>
+              {map.drop.map((item) => (
+                <ItemFrame key={item.id} item={item} />
+              ))}
+            </View>
+          </View>
+          <MyButton onPress={handleStart} style={{ marginBottom: 10 }}>
+            Start
+          </MyButton>
+        </Tile>
+      </Pressable>
+    </Modal>
   );
 }
+
+const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modal: {
+    display: "flex",
+    width: "80%",
+    alignItems: "center",
+    gap: 20,
+  },
+});

@@ -6,11 +6,11 @@ import {
   View,
 } from "react-native";
 import itemImages from "../assets/items/itemImages";
-import { Item } from "../utils/types";
+import { DropItem, Item } from "../utils/types";
 import Tile from "./Tile";
 
 type Props = {
-  item: Item;
+  item: Item | DropItem;
   onPress?: (event: GestureResponderEvent) => void;
 };
 
@@ -22,7 +22,7 @@ export default function ItemFrame({ item, onPress }: Props) {
           source={itemImages[item.id]}
           style={{ height: 60, width: 60 }}
         >
-          <View>
+          {isItem(item) && (
             <Text
               style={{
                 textAlign: "right",
@@ -31,9 +31,13 @@ export default function ItemFrame({ item, onPress }: Props) {
             >
               {item.count}
             </Text>
-          </View>
+          )}
         </ImageBackground>
       </Tile>
     </Pressable>
   );
+}
+
+function isItem(item: Item | DropItem): item is Item {
+  return "count" in item;
 }

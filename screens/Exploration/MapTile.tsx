@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import mapImages from "../../assets/maps/mapImages";
 import { Exploration, Map } from "../../utils/types";
+import { formatTime, formatTimeSeconds } from "../../utils/utils";
 
 type Props = {
   map: Map;
@@ -80,7 +81,7 @@ export default function MapTile({
                 textAlignVertical: "bottom",
               }}
             >
-              {duration + "min"}
+              {Math.floor(duration / 60000) + "min"}
             </Text>
           </View>
         </View>
@@ -92,7 +93,22 @@ export default function MapTile({
               width: `${(1 - progress) * 100}%`,
               left: `${progress * 100}%`,
             }}
-          />
+          ></View>
+        )}
+
+        {active && (
+          <View
+            style={{
+              ...StyleSheet.absoluteFillObject,
+              justifyContent: "center",
+            }}
+          >
+            <Text style={{ textAlign: "center", color: "white", fontSize: 35 }}>
+              {formatTimeSeconds(
+                exploration.startTime + exploration.duration - Date.now()
+              )}
+            </Text>
+          </View>
         )}
       </ImageBackground>
     </Pressable>

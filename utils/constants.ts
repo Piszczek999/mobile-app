@@ -5,7 +5,7 @@ export const maps: { [key: string]: Map } = {
     id: "fields",
     title: "Fields",
     minLevel: 1,
-    duration: 1,
+    duration: 1 * 60 * 1000,
     drop: [
       { id: "flint", name: "Flint" },
       { id: "boar_skin", name: "Boar Skin" },
@@ -16,7 +16,7 @@ export const maps: { [key: string]: Map } = {
     id: "mountains",
     title: "Mountains",
     minLevel: 10,
-    duration: 1,
+    duration: 10 * 60 * 1000,
     drop: [],
   },
 };

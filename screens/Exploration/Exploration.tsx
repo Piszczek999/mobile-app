@@ -60,9 +60,11 @@ export default function Exploration({ route, navigation }: Props) {
           />
         </View>
       </Tile>
-      {selectedMap && (
-        <MapModal map={selectedMap} setSelectedMap={setSelectedMap} />
-      )}
+      <MapModal
+        visible={!!selectedMap}
+        map={selectedMap}
+        setSelectedMap={setSelectedMap}
+      />
       <RewardModal
         visible={rewardVisible}
         setRewardVisible={setRewardVisible}
