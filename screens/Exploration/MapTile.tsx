@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import mapImages from "../../assets/maps/mapImages";
 import { Exploration, Map } from "../../utils/types";
-import { formatTime, formatTimeSeconds } from "../../utils/utils";
+import { formatTimeSeconds } from "../../utils/utils";
 
 type Props = {
   map: Map;

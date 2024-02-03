@@ -1,21 +1,16 @@
-import {
-  GestureResponderEvent,
-  ImageBackground,
-  Pressable,
-  Text,
-  View,
-} from "react-native";
+import { useState } from "react";
+import { ImageBackground, Pressable, Text } from "react-native";
 import itemImages from "../assets/items/itemImages";
 import { DropItem, Item } from "../utils/types";
-import Tile from "./Tile";
-import { useState } from "react";
 import ItemModal from "./ItemModal";
+import Tile from "./Tile";
 
 type Props = {
   item: Item | DropItem;
+  equiped?: boolean;
 };
 
-export default function ItemFrame({ item }: Props) {
+export default function ItemFrame({ item, equiped }: Props) {
   const [modalVisible, setModalVisible] = useState(false);
   if (!item) return null;
 
@@ -42,6 +37,7 @@ export default function ItemFrame({ item }: Props) {
         item={item}
         visible={modalVisible}
         setModalVisible={setModalVisible}
+        equiped={equiped}
       />
     </Pressable>
   );

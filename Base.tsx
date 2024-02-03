@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   BottomTabNavigationOptions,
   createBottomTabNavigator,
@@ -30,6 +29,7 @@ const Tab = createBottomTabNavigator<RootStackParamList>();
 const Base: React.FC = () => {
   const [logged, setLogged] = useState(false);
   const { character, setCharacter, rewards, setRewards } = useCharacter();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -38,6 +38,7 @@ const Base: React.FC = () => {
         login(token);
       } else {
         logout();
+        setLoading(false);
       }
     });
     socket.on("alert", handleAlert);
@@ -71,18 +72,18 @@ const Base: React.FC = () => {
   const handleUpdateCharacter = (character: Character) => {
     setCharacter(character);
     setLogged(true);
+    setLoading(false);
   };
 
   const handleLogout = async () => {
     try {
-      await AsyncStorage.multiRemove(["email", "password"]);
       await signOut(auth);
     } catch (error) {
       console.error(error);
     }
   };
 
-  if (!logged) return <Login />;
+  if (!logged) return <Login loading={loading} />;
 
   return (
     <NavigationContainer>

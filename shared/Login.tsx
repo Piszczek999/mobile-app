@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
 import {
   createUserWithEmailAndPassword,
@@ -21,27 +21,15 @@ import Input from "./Input";
 import MyButton from "./MyButton";
 import Tile from "./Tile";
 
-export default function Login() {
+export default function Login({ loading }: { loading: boolean }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isRegister, setIsRegister] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const storeCredentials = async () => {
-    try {
-      await AsyncStorage.multiSet([
-        ["email", email],
-        ["password", password],
-      ]);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const handleLogin = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      await storeCredentials();
     } catch (error: any) {
       if (error.code === "auth/invalid-credential") {
         alert("Password or email is incorrect");
@@ -61,7 +49,6 @@ export default function Login() {
   const handleRegister = async () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      await storeCredentials();
     } catch (error: any) {
       if (error.code === "auth/email-already-in-use") {
         alert("Email is already in use.");
@@ -78,42 +65,7 @@ export default function Login() {
     }
   };
 
-  useEffect(() => {
-    const loadCredentials = async () => {
-      try {
-        setIsLoading(true);
-        const credentials = await AsyncStorage.multiGet(["email", "password"]);
-        const storedEmail = credentials[0][1];
-        const storedPassword = credentials[1][1];
-        if (storedEmail && storedPassword) {
-          setEmail(storedEmail);
-          setPassword(storedPassword);
-          try {
-            await signInWithEmailAndPassword(auth, storedEmail, storedPassword);
-          } catch (error: any) {
-            if (error.code === "auth/email-already-in-use") {
-              alert("Email is already in use.");
-            } else if (error.code === "auth/missing-password") {
-              alert("Type in password");
-            } else if (error.code === "auth/invalid-email") {
-              alert("Email is incorrect");
-            } else {
-              alert("An error occurred during user creation.");
-              console.error(error);
-            }
-            setIsLoading(false);
-          }
-        } else {
-          setIsLoading(false);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    loadCredentials();
-  }, []);
-
-  if (isLoading)
+  if (loading)
     return (
       <View style={globalStyles.container}>
         <View style={styles.content}>

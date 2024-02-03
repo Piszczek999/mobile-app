@@ -2,7 +2,8 @@ import { io } from "socket.io-client";
 
 export const socket = io(
   // "https://mobile-app-server-3331c93a3d85.herokuapp.com"
-  "http://192.168.249.36:5001"
+  // "http://192.168.249.36:5001"
+  "http://192.168.1.22:5001"
 );
 
 export const login = (token: string) => {

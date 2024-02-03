@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import {
   ImageBackground,
   Modal,
@@ -7,22 +8,24 @@ import {
   View,
 } from "react-native";
 import itemImages from "../assets/items/itemImages";
-import { DropItem, Item } from "../utils/types";
-import Tile from "./Tile";
-import MyButton from "./MyButton";
-import { Fragment } from "react";
 import { socket } from "../socket";
-import { useCharacter } from "./CharacterContext";
+import { DropItem, Item } from "../utils/types";
+import MyButton from "./MyButton";
+import Tile from "./Tile";
 
 type Props = {
   item: Item | DropItem;
   visible: boolean;
+  equiped?: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function ItemModal({ visible, item, setModalVisible }: Props) {
-  const { setCharacter } = useCharacter();
-
+export default function ItemModal({
+  visible,
+  item,
+  setModalVisible,
+  equiped = false,
+}: Props) {
   const handleClose = () => {
     setModalVisible(false);
   };
@@ -30,6 +33,12 @@ export default function ItemModal({ visible, item, setModalVisible }: Props) {
   const handleEquip = () => {
     socket.emit("equip", item);
     setModalVisible(false);
+  };
+  const handleUnequip = () => {
+    if (isItem(item) && item.bonuses) {
+      socket.emit("unequip", item.slot);
+      setModalVisible(false);
+    }
   };
 
   return (
@@ -87,10 +96,14 @@ export default function ItemModal({ visible, item, setModalVisible }: Props) {
             >
               {isItem(item) && item.type === "equipable" ? (
                 <Fragment>
-                  <MyButton onPress={handleEquip}>Equip</MyButton>
+                  {equiped ? (
+                    <MyButton onPress={handleUnequip}>Unequip</MyButton>
+                  ) : (
+                    <MyButton onPress={handleEquip}>Equip</MyButton>
+                  )}
                 </Fragment>
               ) : (
-                <MyButton>Remove</MyButton>
+                false && <MyButton>Remove</MyButton>
               )}
             </View>
           </Tile>

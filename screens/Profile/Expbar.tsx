@@ -21,7 +21,7 @@ export default function Expbar({ character }: Props) {
       <Text
         style={{
           position: "absolute",
-          left: 0,
+          left: 3,
           top: 3,
           color: "white",
           fontSize: 15,
@@ -42,7 +42,7 @@ export default function Expbar({ character }: Props) {
       <Text
         style={{
           position: "absolute",
-          right: 0,
+          right: 3,
           top: 3,
           color: "white",
           fontSize: 15,
