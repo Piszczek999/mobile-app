@@ -80,7 +80,15 @@ export default function MapModal({ visible, map, setSelectedMap }: Props) {
               >
                 Possible drop:
               </Text>
-              <View style={{ display: "flex", flexDirection: "row", gap: 5 }}>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: 5,
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                }}
+              >
                 {map.drop.map((item) => (
                   <ItemFrame key={item.id} item={item} />
                 ))}

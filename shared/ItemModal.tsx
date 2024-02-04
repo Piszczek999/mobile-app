@@ -80,13 +80,16 @@ export default function ItemModal({
                 alignItems: "center",
               }}
             >
-              {isItem(item) && item.bonuses && (
-                <Text
-                  style={{ color: "white", fontSize: 20, fontWeight: "bold" }}
-                >
-                  Armor: {item.bonuses.armor}
-                </Text>
-              )}
+              <Text
+                style={{ color: "orange", fontSize: 20, fontWeight: "bold" }}
+              >
+                {item.bonuses?.attack && "Attack: " + item.bonuses.attack}
+              </Text>
+              <Text
+                style={{ color: "lightgray", fontSize: 20, fontWeight: "bold" }}
+              >
+                {item.bonuses?.defense && "Defense: " + item.bonuses.defense}
+              </Text>
             </View>
             <View
               style={{
@@ -127,7 +130,7 @@ const styles = StyleSheet.create({
   modal: {
     display: "flex",
     alignItems: "center",
-    gap: 20,
+    gap: 10,
     padding: 10,
   },
 });

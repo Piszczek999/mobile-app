@@ -6,9 +6,15 @@ export type Character = {
   level: number;
   exp: number;
   gold: number;
+  stats: Stats;
   exploration: Exploration | null;
   equipment: Equipment;
   inventory: Item[];
+};
+
+export type Stats = {
+  attack: number;
+  defense: number;
 };
 
 export type Exploration = {
@@ -35,12 +41,18 @@ export type Item = {
   count: number;
   equipable: boolean;
   slot?: string;
-  bonuses?: any;
+  bonuses?: Bonuses;
 };
 
 export type DropItem = {
   id: string;
   name: string;
+  bonuses?: Bonuses;
+};
+
+export type Bonuses = {
+  attack?: number;
+  defense?: number;
 };
 
 export type Map = {

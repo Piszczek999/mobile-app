@@ -10,45 +10,44 @@ export default function Expbar({ character }: Props) {
   const { exp, level } = character;
 
   return (
-    <View style={{ height: 30, backgroundColor: "black" }}>
+    <View
+      style={{
+        height: 30,
+        paddingHorizontal: 10,
+        backgroundColor: "black",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+    >
       <View
         style={{
           width: `${(exp / LEVELS[level]) * 100}%`,
           backgroundColor: "#a39",
           height: "100%",
+          position: "absolute",
         }}
       ></View>
       <Text
         style={{
-          position: "absolute",
-          left: 3,
-          top: 3,
-          color: "white",
-          fontSize: 15,
-        }}
-      >
-        {Math.floor(exp)}
-      </Text>
-      <Text
-        style={{
-          position: "absolute",
-          left: "45%",
           color: "white",
           fontSize: 20,
         }}
       >
-        {Math.floor((exp / LEVELS[level]) * 100)}%
+        {"Level " + level}
       </Text>
       <Text
         style={{
-          position: "absolute",
-          right: 3,
-          top: 3,
+          textAlign: "right",
           color: "white",
           fontSize: 15,
         }}
       >
-        {LEVELS[level]}
+        {`${Math.floor(exp)}/${LEVELS[level]} (${(
+          (exp / LEVELS[level]) *
+          100
+        ).toFixed(2)}%)`}
       </Text>
     </View>
   );

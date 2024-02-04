@@ -10,7 +10,8 @@ export const maps: { [key: string]: Map } = {
       { id: "flint", name: "Flint" },
       { id: "boar_skin", name: "Boar Skin" },
       { id: "magical_flower", name: "Magical Flower" },
-      { id: "leather_boots", name: "Leather Boots" },
+      { id: "leather_boots", name: "Leather Boots", bonuses: { defense: 3 } },
+      { id: "wooden_sword", name: "Wooden Sword", bonuses: { attack: 5 } },
     ],
   },
   mountains: {
