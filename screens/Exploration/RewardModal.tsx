@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import {
   ImageBackground,
   Modal,
@@ -7,11 +7,13 @@ import {
   Text,
   View,
 } from "react-native";
+import mapImages from "../../assets/maps/mapImages";
 import { useCharacter } from "../../shared/CharacterContext";
+import ItemFrame from "../../shared/ItemFrame";
 import MyButton from "../../shared/MyButton";
 import Tile from "../../shared/Tile";
-import ItemFrame from "../../shared/ItemFrame";
-import mapImages from "../../assets/maps/mapImages";
+import Expbar from "../Profile/Expbar";
+import RewardExpbar from "./RewardExpbar";
 
 type Props = {
   visible: boolean;
@@ -20,6 +22,7 @@ type Props = {
 
 export default function RewardModal({ visible, setRewardVisible }: Props) {
   const { rewards, setRewards, character } = useCharacter();
+  if (!character) return;
 
   const handleClose = () => {
     setRewards(undefined);
@@ -45,11 +48,7 @@ export default function RewardModal({ visible, setRewardVisible }: Props) {
               alignItems: "center",
               justifyContent: "center",
             }}
-          >
-            <Text style={{ color: "yellow", fontSize: 30, fontWeight: "bold" }}>
-              SUCCESS!
-            </Text>
-          </ImageBackground>
+          ></ImageBackground>
           <Tile colors={["#666", "#444"]} style={styles.modal}>
             <View
               style={{
@@ -65,23 +64,30 @@ export default function RewardModal({ visible, setRewardVisible }: Props) {
               <Text style={{ color: "gold", fontSize: 20, fontWeight: "bold" }}>
                 {"Gold: " + Math.floor(rewards.gold)}
               </Text>
-              <Text
-                style={{ color: "white", fontSize: 20, fontWeight: "bold" }}
-              >
-                {"Exp: " + Math.floor(rewards.exp)}
-              </Text>
             </View>
-            <Text style={{ color: "white", fontSize: 30, fontWeight: "bold" }}>
-              Items found:
-            </Text>
-            <View style={{ display: "flex", flexDirection: "row", gap: 5 }}>
-              {rewards.items ? (
-                rewards.items.map((item) => (
-                  <ItemFrame key={item.id} item={item} />
-                ))
-              ) : (
-                <Text>No items found</Text>
-              )}
+            <View style={{ alignItems: "center" }}>
+              <Text
+                style={{ color: "white", fontSize: 25, fontWeight: "bold" }}
+              >
+                Items found:
+              </Text>
+              <View style={{ display: "flex", flexDirection: "row", gap: 5 }}>
+                {rewards.items ? (
+                  rewards.items.map((item) => (
+                    <ItemFrame key={item.id} item={item} />
+                  ))
+                ) : (
+                  <Text style={{ color: "white", fontSize: 20 }}>
+                    No items found
+                  </Text>
+                )}
+              </View>
+            </View>
+            <View
+              style={{ display: "flex", width: "100%", alignItems: "center" }}
+            >
+              <Text style={{ color: "white", fontSize: 20 }}>Progress:</Text>
+              <RewardExpbar character={character} exp={rewards.exp} />
             </View>
 
             <MyButton onPress={handleClose}>Collect</MyButton>
