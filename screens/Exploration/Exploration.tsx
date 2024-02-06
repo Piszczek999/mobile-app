@@ -1,6 +1,5 @@
 import { RouteProp, useFocusEffect } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { StatusBar } from "expo-status-bar";
 import { Fragment, useCallback, useState } from "react";
 import { View } from "react-native";
 import { RootStackParamList } from "../../Base";
@@ -27,7 +26,7 @@ type Props = {
 };
 
 export default function Exploration({ route, navigation }: Props) {
-  const { character, rewards, setRewards } = useCharacter();
+  const { character, rewards } = useCharacter();
   if (!character) return;
 
   const { level, exploration } = character;
@@ -43,7 +42,6 @@ export default function Exploration({ route, navigation }: Props) {
 
   return (
     <Fragment>
-      <StatusBar style="light" />
       <Tile style={globalStyles.container}>
         <View style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           <MapTile

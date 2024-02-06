@@ -13,7 +13,7 @@ import { formatTimeSeconds } from "../../utils/utils";
 type Props = {
   map: Map;
   characterLevel: number;
-  exploration: Exploration;
+  exploration: Exploration | null;
   setSelectedMap: React.Dispatch<React.SetStateAction<Map | undefined>>;
 };
 

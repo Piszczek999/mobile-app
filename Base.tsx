@@ -3,32 +3,38 @@ import {
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { Pressable } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
 import { auth } from "./firebase";
 import Exploration from "./screens/Exploration/Exploration";
-import Home from "./screens/Home";
+import Home from "./screens/Home/Home";
 import Profile from "./screens/Profile/Profile";
 import { useCharacter } from "./shared/CharacterContext";
 import Login from "./shared/Login";
+import SettingsMenu from "./shared/SettingsMenu";
 import TabBar from "./shared/TabBar";
 import { handleAlert, login, logout, socket } from "./socket";
 import { globalStyles } from "./styles/global";
-import { Character, Rewards } from "./utils/types";
+import { Character, CharacterHead, Rewards } from "./utils/types";
 
 export type RootStackParamList = {
-  Exploration: { icon: string; user: any };
-  Home: { icon: string; user: any };
-  Profile: { icon: string; user: any };
+  Exploration: { icon: string };
+  Home: { icon: string };
+  Profile: { icon: string };
 };
 
 const Tab = createBottomTabNavigator<RootStackParamList>();
 
 const Base: React.FC = () => {
   const [logged, setLogged] = useState(false);
-  const { character, setCharacter, rewards, setRewards } = useCharacter();
+  const {
+    character,
+    setCharacter,
+    rewards,
+    setRewards,
+    leaderboard,
+    setLeaderboard,
+  } = useCharacter();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -43,6 +49,7 @@ const Base: React.FC = () => {
     });
     socket.on("alert", handleAlert);
     socket.on("updateCharacter", handleUpdateCharacter);
+    socket.on("updateLeaderboard", handleUpdateLeaderboard);
     socket.on("rewards", handleRewards);
     socket.on("logout", handleOnLogout);
 
@@ -50,6 +57,7 @@ const Base: React.FC = () => {
       unsubscribe();
       socket.off("alert", handleAlert);
       socket.off("updateCharacter", handleUpdateCharacter);
+      socket.off("updateLeaderboard", handleUpdateLeaderboard);
       socket.off("rewards", handleRewards);
       socket.off("logout", handleOnLogout);
     };
@@ -75,12 +83,8 @@ const Base: React.FC = () => {
     setLoading(false);
   };
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.error(error);
-    }
+  const handleUpdateLeaderboard = (leaderboard: CharacterHead[]) => {
+    setLeaderboard(leaderboard);
   };
 
   if (!logged) return <Login loading={loading} />;
@@ -91,31 +95,22 @@ const Base: React.FC = () => {
         <Tab.Screen
           name="Exploration"
           component={Exploration}
-          initialParams={{ icon: "compass", user: character }}
+          initialParams={{ icon: "compass" }}
           options={screenOptions}
         />
         <Tab.Screen
           name="Home"
           component={Home}
-          initialParams={{ icon: "home", user: character }}
-          options={screenOptions}
+          initialParams={{ icon: "home" }}
+          options={{ ...screenOptions, headerShown: false }}
         />
         <Tab.Screen
           name="Profile"
           component={Profile}
-          initialParams={{ icon: "compass", user: character }}
+          initialParams={{ icon: "user" }}
           options={({ navigation }) => ({
             ...screenOptions,
-            headerRight: () => (
-              <Pressable
-                onPress={async () => {
-                  await handleLogout();
-                }}
-                style={{ marginRight: 16 }}
-              >
-                <Icon name="sign-out" color="white" size={30} />
-              </Pressable>
-            ),
+            headerRight: () => <SettingsMenu />,
           })}
         />
       </Tab.Navigator>

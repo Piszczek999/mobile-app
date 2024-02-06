@@ -12,6 +12,12 @@ export type Character = {
   inventory: Item[];
 };
 
+export type CharacterHead = {
+  uid: string;
+  name: string;
+  level: number;
+};
+
 export type Stats = {
   attack: number;
   defense: number;

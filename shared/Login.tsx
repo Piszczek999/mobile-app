@@ -1,7 +1,6 @@
 import {
   ActivityIndicator,
   Keyboard,
-  Pressable,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
@@ -9,12 +8,11 @@ import {
 } from "react-native";
 
 // import AsyncStorage from "@react-native-async-storage/async-storage";
-import { StatusBar } from "expo-status-bar";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { Fragment, useEffect, useState } from "react";
+import { useState } from "react";
 import { auth } from "../firebase";
 import { globalStyles } from "../styles/global";
 import Input from "./Input";
@@ -75,70 +73,65 @@ export default function Login({ loading }: { loading: boolean }) {
     );
 
   return (
-    <Fragment>
-      <StatusBar style="light" />
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <Tile style={globalStyles.container}>
-          {isRegister ? (
-            <View style={styles.content}>
-              <Text style={{ ...globalStyles.h1, marginBottom: 40 }}>
-                Create an account
-              </Text>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <Tile style={globalStyles.container}>
+        {isRegister ? (
+          <View style={styles.content}>
+            <Text style={{ ...globalStyles.h1, marginBottom: 40 }}>
+              Create an account
+            </Text>
+            <Input
+              textContentType="emailAddress"
+              onChangeText={setEmail}
+              placeholder="Email"
+            />
+            <Input
+              secureTextEntry
+              textContentType="password"
+              onChangeText={setPassword}
+              placeholder="Password"
+            />
+            <MyButton onPress={async () => await handleRegister()}>
+              Sign Up
+            </MyButton>
+            <MyButton
+              colors={["#44a", "#449"]}
+              onPress={() => setIsRegister(false)}
+            >
+              Log in instead
+            </MyButton>
+          </View>
+        ) : (
+          <View style={styles.content}>
+            <Text style={{ ...globalStyles.h1, marginBottom: 40 }}>Log in</Text>
+            <View style={styles.center}>
               <Input
                 textContentType="emailAddress"
                 onChangeText={setEmail}
                 placeholder="Email"
               />
+            </View>
+            <View style={styles.center}>
               <Input
                 secureTextEntry
                 textContentType="password"
                 onChangeText={setPassword}
                 placeholder="Password"
               />
-              <MyButton onPress={async () => await handleRegister()}>
-                Sign Up
-              </MyButton>
-              <MyButton
-                colors={["#44a", "#449"]}
-                onPress={() => setIsRegister(false)}
-              >
-                Log in instead
-              </MyButton>
             </View>
-          ) : (
-            <View style={styles.content}>
-              <Text style={{ ...globalStyles.h1, marginBottom: 40 }}>
-                Log in
-              </Text>
-              <View style={styles.center}>
-                <Input
-                  textContentType="emailAddress"
-                  onChangeText={setEmail}
-                  placeholder="Email"
-                />
-              </View>
-              <View style={styles.center}>
-                <Input
-                  secureTextEntry
-                  textContentType="password"
-                  onChangeText={setPassword}
-                  placeholder="Password"
-                />
-              </View>
-              <MyButton onPress={async () => await handleLogin()}>
-                Sign in
-              </MyButton>
-              <MyButton
-                colors={["#44a", "#449"]}
-                onPress={() => setIsRegister(true)}
-              >
-                Register
-              </MyButton>
-            </View>
-          )}
-        </Tile>
-      </TouchableWithoutFeedback>
-    </Fragment>
+            <MyButton onPress={async () => await handleLogin()}>
+              Sign in
+            </MyButton>
+            <MyButton
+              colors={["#44a", "#449"]}
+              onPress={() => setIsRegister(true)}
+            >
+              Register
+            </MyButton>
+          </View>
+        )}
+      </Tile>
+    </TouchableWithoutFeedback>
   );
 }
 

@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     color: "white",
     fontWeight: "bold",
-    fontSize: 30,
+    fontSize: 25,
     textAlign: "center",
   },
 });

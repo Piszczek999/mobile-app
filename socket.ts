@@ -22,4 +22,8 @@ export const explorationComplete = () => {
   socket.emit("explorationComplete");
 };
 
+export const changeName = (name: string) => {
+  socket.emit("changeName", name);
+};
+
 export const handleAlert = (message: any) => alert(message);
