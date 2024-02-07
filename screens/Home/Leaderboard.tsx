@@ -73,7 +73,6 @@ export default function Leaderboard() {
         <Text style={styles.headerCell}>Place</Text>
         <Text style={styles.headerCell}>Name</Text>
         <Text style={styles.headerCell}>Level</Text>
-        {/* Add more Text components for other headers if needed */}
       </View>
       <FlatList
         data={leaderboard}

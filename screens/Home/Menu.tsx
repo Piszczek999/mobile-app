@@ -1,9 +1,9 @@
-import { Text, View } from "react-native";
-import Tile from "../../shared/Tile";
-import { globalStyles } from "../../styles/global";
-import MyButton from "../../shared/MyButton";
+import { View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MCIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import MyButton from "../../shared/MyButton";
+import Tile from "../../shared/Tile";
+import { globalStyles } from "../../styles/global";
 
 export default function Menu({ navigation }: any) {
   return (

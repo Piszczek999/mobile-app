@@ -14,6 +14,7 @@ type Props = {
   onPress?: (event: GestureResponderEvent) => void;
   style?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
+  disabled?: boolean;
   children?: ReactNode;
 } & TileProps;
 
@@ -21,6 +22,7 @@ export default function MyButton({
   onPress,
   style,
   textStyle,
+  disabled = false,
   children,
   ...props
 }: Props) {
@@ -32,7 +34,10 @@ export default function MyButton({
     >
       <Pressable
         onPress={onPress}
-        style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}
+        style={({ pressed }) => [
+          { opacity: disabled ? 0.5 : pressed ? 0.8 : 1 },
+        ]}
+        disabled={disabled}
       >
         <Text style={[styles.title, textStyle]}>{children}</Text>
       </Pressable>

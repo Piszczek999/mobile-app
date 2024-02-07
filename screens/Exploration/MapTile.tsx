@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   ImageBackground,
   Pressable,
@@ -9,6 +9,7 @@ import {
 import mapImages from "../../assets/maps/mapImages";
 import { Exploration, Map } from "../../utils/types";
 import { formatTimeSeconds } from "../../utils/utils";
+import Icon5 from "react-native-vector-icons/FontAwesome5";
 
 type Props = {
   map: Map;
@@ -24,7 +25,7 @@ export default function MapTile({
   setSelectedMap,
 }: Props) {
   const [progress, setProgress] = useState(0);
-  const { id, title, minLevel, duration } = map;
+  const { id, title, minLevel, duration, dungeon } = map;
   const disabled = characterLevel < minLevel;
   const active = exploration?.mapId == id;
 
@@ -46,7 +47,6 @@ export default function MapTile({
 
   return (
     <Pressable
-      disabled={disabled || active}
       onPress={() => setSelectedMap(map)}
       style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}
     >
@@ -72,7 +72,16 @@ export default function MapTile({
               justifyContent: "space-between",
             }}
           >
-            <Text style={{ color: "lightgray", fontSize: 30 }}>{title}</Text>
+            {dungeon ? (
+              <Text style={{ color: "lightgray", fontSize: 30 }}>
+                <Fragment>
+                  <Icon5 name="dungeon" size={30} />
+                  {" " + title}
+                </Fragment>
+              </Text>
+            ) : (
+              <Text style={{ color: "lightgray", fontSize: 30 }}>{title}</Text>
+            )}
             <Text
               style={{
                 color: "lightgray",

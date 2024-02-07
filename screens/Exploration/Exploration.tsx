@@ -13,25 +13,14 @@ import MapTile from "./MapTile";
 import RewardModal from "./RewardModal";
 import { maps } from "../../utils/constants";
 
-type ExplorationScreenRouteProp = RouteProp<RootStackParamList, "Exploration">;
+export default function Exploration() {
+  const [selectedMap, setSelectedMap] = useState<Map | undefined>();
+  const [rewardVisible, setRewardVisible] = useState(false);
 
-type ExplorationScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "Exploration"
->;
-
-type Props = {
-  route: ExplorationScreenRouteProp;
-  navigation: ExplorationScreenNavigationProp;
-};
-
-export default function Exploration({ route, navigation }: Props) {
   const { character, rewards } = useCharacter();
   if (!character) return;
 
   const { level, exploration } = character;
-  const [selectedMap, setSelectedMap] = useState<Map | undefined>();
-  const [rewardVisible, setRewardVisible] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -47,6 +36,12 @@ export default function Exploration({ route, navigation }: Props) {
           <MapTile
             characterLevel={level}
             map={maps.fields}
+            setSelectedMap={setSelectedMap}
+            exploration={exploration}
+          />
+          <MapTile
+            characterLevel={level}
+            map={maps.abandoned_village}
             setSelectedMap={setSelectedMap}
             exploration={exploration}
           />

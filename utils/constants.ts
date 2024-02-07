@@ -10,16 +10,29 @@ export const maps: { [key: string]: Map } = {
       { id: "flint", name: "Flint" },
       { id: "boar_skin", name: "Boar Skin" },
       { id: "magical_flower", name: "Magical Flower" },
+      { id: "wooden_key", name: "Wooden Key" },
+    ],
+    dungeon: false,
+  },
+  abandoned_village: {
+    id: "abandoned_village",
+    title: "Abandoned Village",
+    minLevel: 5,
+    duration: 10 * 60 * 1000,
+    drop: [
       { id: "leather_boots", name: "Leather Boots", bonuses: { defense: 3 } },
       { id: "wooden_sword", name: "Wooden Sword", bonuses: { attack: 5 } },
     ],
+    dungeon: true,
+    requiredItem: { id: "wooden_key", name: "Wooden Key", count: 1 },
   },
   mountains: {
     id: "mountains",
     title: "Mountains",
     minLevel: 10,
-    duration: 10 * 60 * 1000,
+    duration: 5 * 60 * 1000,
     drop: [],
+    dungeon: false,
   },
 };
 

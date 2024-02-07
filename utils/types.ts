@@ -50,6 +50,12 @@ export type Item = {
   bonuses?: Bonuses;
 };
 
+export type RequiredItem = {
+  id: string;
+  name: string;
+  count: number;
+};
+
 export type DropItem = {
   id: string;
   name: string;
@@ -67,6 +73,8 @@ export type Map = {
   minLevel: number;
   duration: number;
   drop: DropItem[];
+  dungeon: boolean;
+  requiredItem?: RequiredItem;
 };
 
 export type Rewards = {

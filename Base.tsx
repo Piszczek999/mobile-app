@@ -27,14 +27,7 @@ const Tab = createBottomTabNavigator<RootStackParamList>();
 
 const Base: React.FC = () => {
   const [logged, setLogged] = useState(false);
-  const {
-    character,
-    setCharacter,
-    rewards,
-    setRewards,
-    leaderboard,
-    setLeaderboard,
-  } = useCharacter();
+  const { setCharacter, setRewards, setLeaderboard } = useCharacter();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -108,7 +101,7 @@ const Base: React.FC = () => {
           name="Profile"
           component={Profile}
           initialParams={{ icon: "user" }}
-          options={({ navigation }) => ({
+          options={() => ({
             ...screenOptions,
             headerRight: () => <SettingsMenu />,
           })}

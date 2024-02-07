@@ -13,6 +13,8 @@ import MyButton from "../../shared/MyButton";
 import Tile from "../../shared/Tile";
 import { formatTime } from "../../utils/utils";
 import ItemFrame from "../../shared/ItemFrame";
+import { useCharacter } from "../../shared/CharacterContext";
+import { Fragment } from "react";
 
 type Props = {
   map: Map | undefined;
@@ -21,8 +23,17 @@ type Props = {
 };
 
 export default function MapModal({ visible, map, setSelectedMap }: Props) {
-  if (!map) return;
-  const { id, title, minLevel } = map;
+  const { character } = useCharacter();
+  if (!map || !character) return;
+  const { id, title, minLevel, requiredItem, dungeon } = map;
+  let disabled = false;
+  if (requiredItem) {
+    const item = character.inventory.find(
+      (item) => item.id === requiredItem.id
+    );
+    if (item && item.count >= requiredItem.count) disabled = false;
+    else disabled = true;
+  } else if (character.exploration) disabled = true;
 
   const handleStart = () => {
     explorationStart(map.id);
@@ -45,7 +56,7 @@ export default function MapModal({ visible, map, setSelectedMap }: Props) {
           <ImageBackground
             source={mapImages[id]}
             style={{ height: 100, width: "100%" }}
-          ></ImageBackground>
+          />
           <Tile style={styles.modal} colors={["#666", "#444"]}>
             <View
               style={{
@@ -75,6 +86,34 @@ export default function MapModal({ visible, map, setSelectedMap }: Props) {
                 alignItems: "center",
               }}
             >
+              {requiredItem && (
+                <Fragment>
+                  <Text
+                    style={{ color: "white", fontSize: 30, fontWeight: "bold" }}
+                  >
+                    Required Items:
+                  </Text>
+
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      gap: 5,
+                      flexWrap: "wrap",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <ItemFrame key={requiredItem.id} item={requiredItem} />
+                  </View>
+                </Fragment>
+              )}
+            </View>
+            <View
+              style={{
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
               <Text
                 style={{ color: "white", fontSize: 30, fontWeight: "bold" }}
               >
@@ -94,7 +133,9 @@ export default function MapModal({ visible, map, setSelectedMap }: Props) {
                 ))}
               </View>
             </View>
-            <MyButton onPress={handleStart}>Start</MyButton>
+            <MyButton disabled={disabled} onPress={handleStart}>
+              Start
+            </MyButton>
           </Tile>
         </Pressable>
       </Pressable>
